@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout — EBELA STYLE</title>
+  <meta name="description" content="Secure checkout — shipping details and order summary." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ================== HEADER (same as index) ================== -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="EBELA STYLE Home">
+        <span class="brand-mark" aria-hidden="true">E</span>
+        <span class="brand-text">BELA STYLE</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <ul class="nav-list">
+          <li><a href="index.html">Home</a></li>
+
+          <li class="has-dropdown">
+            <button class="nav-link" aria-haspopup="true" aria-expanded="false" aria-controls="megaShop">
+              Shop <span class="chev" aria-hidden="true">▾</span>
+            </button>
+            <div id="megaShop" class="mega" role="menu" aria-label="Shop categories">
+              <div class="mega-inner">
+                <section class="mega-col" aria-labelledby="cat-title">
+                  <h3 id="cat-title" class="mega-title">Categories</h3>
+                  <ul class="mega-list" role="none">
+                    <li role="none"><a role="menuitem" href="products.html#tees">Tees</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#hoodies">Hoodies</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#pants">Pants</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#footwear">Footwear</a></li>
+                  </ul>
+                </section>
+                <section class="mega-col" aria-labelledby="filter-title">
+                  <h3 id="filter-title" class="mega-title">Quick filters</h3>
+                  <ul class="mega-tags">
+                    <li><a href="products.html?tag=new">New</a></li>
+                    <li><a href="products.html?tag=popular">Popular</a></li>
+                    <li><a href="products.html?tag=sale">Sale</a></li>
+                    <li><a href="products.html?tag=unisex">Unisex</a></li>
+                  </ul>
+                </section>
+                <aside class="mega-promo">
+                  <a href="products.html#hoodies" class="promo-card">
+                    <img src="assets/img/products/img/best2.jpg" alt="Soft hoodie — shop now">
+                    <span class="promo-text">Soft Hoodies →</span>
+                  </a>
+                </aside>
+              </div>
+            </div>
+          </li>
+
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+
+          <li class="nav-search">
+            <form action="products.html" method="get" role="search" aria-label="Site search">
+              <input name="q" type="search" placeholder="Search…" />
+            </form>
+          </li>
+
+          <li>
+            <a class="cart-link" href="cart.html" aria-label="View cart">
+              <span class="icon" aria-hidden="true">🛒</span><span class="cart-count" id="headerCartCount">0</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <button id="menuToggle" class="menu-toggle" aria-controls="mobileNav" aria-expanded="false">
+        <span class="visually-hidden">Toggle menu</span> ☰
+      </button>
+    </div>
+
+    <nav id="mobileNav" class="mobile-nav" aria-label="Mobile">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+
+        <li class="mobile-acc">
+          <button class="acc-btn" aria-expanded="false" aria-controls="mShop">Shop</button>
+          <div id="mShop" class="acc-panel">
+            <ul>
+              <li><a href="products.html#tees" class="js-close-nav">Tees</a></li>
+              <li><a href="products.html#hoodies" class="js-close-nav">Hoodies</a></li>
+              <li><a href="products.html#pants" class="js-close-nav">Pants</a></li>
+              <li><a href="products.html#footwear" class="js-close-nav">Footwear</a></li>
+              <li class="acc-sep"></li>
+              <li><a href="products.html?tag=new" class="js-close-nav">New</a></li>
+              <li><a href="products.html?tag=popular" class="js-close-nav">Popular</a></li>
+              <li><a href="products.html?tag=sale" class="js-close-nav">Sale</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li><a href="index.html#about" class="js-close-nav">About</a></li>
+        <li><a href="index.html#contact" class="js-close-nav">Contact</a></li>
+        <li><a href="cart.html" class="js-close-nav">Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+  <!-- ================== /HEADER ================== -->
+
+  <main id="main" class="section">
+    <div class="container checkout-layout">
+      <!-- Left: form -->
+      <form id="checkoutForm" class="form-card" novalidate>
+        <h1 style="margin-top:0">Checkout</h1>
+        <p class="section-subtitle">Enter your shipping details and confirm your order.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="firstName">First name</label>
+            <input id="firstName" name="firstName" autocomplete="given-name" required />
+            <small class="err" aria-live="polite"></small>
+          </div>
+          <div class="field">
+            <label for="lastName">Last name</label>
+            <input id="lastName" name="lastName" autocomplete="family-name" required />
+            <small class="err" aria-live="polite"></small>
+          </div>
+
+          <div class="field wide">
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" autocomplete="email" required />
+            <small class="err" aria-live="polite"></small>
+          </div>
+
+          <div class="field wide">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" autocomplete="tel" />
+          </div>
+
+          <div class="field wide">
+            <label for="address">Address</label>
+            <input id="address" name="address" autocomplete="street-address" required />
+            <small class="err" aria-live="polite"></small>
+          </div>
+
+          <div class="field">
+            <label for="city">City</label>
+            <input id="city" name="city" autocomplete="address-level2" required />
+            <small class="err"></small>
+          </div>
+          <div class="field">
+            <label for="state">State</label>
+            <input id="state" name="state" autocomplete="address-level1" />
+          </div>
+          <div class="field">
+            <label for="zip">ZIP</label>
+            <input id="zip" name="zip" autocomplete="postal-code" required />
+            <small class="err"></small>
+          </div>
+          <div class="field">
+            <label for="country">Country</label>
+            <input id="country" name="country" autocomplete="country-name" value="United States" />
+          </div>
+        </div>
+
+        <fieldset class="field-set">
+          <legend>Shipping method</legend>
+          <label class="radio-row"><input type="radio" name="shipping" value="standard" checked> Standard (3–6 days) — $5</label>
+          <label class="radio-row"><input type="radio" name="shipping" value="express"> Express (1–2 days) — $15</label>
+        </fieldset>
+
+        <fieldset class="field-set">
+          <legend>Payment</legend>
+          <label class="radio-row"><input type="radio" name="payment" value="card" checked> Credit/Debit Card (placeholder)</label>
+          <label class="radio-row"><input type="radio" name="payment" value="cod"> Cash on Delivery</label>
+        </fieldset>
+
+        <div class="form-actions">
+          <a class="btn btn-ghost" href="cart.html">Back to Cart</a>
+          <button type="submit" class="btn btn-primary">Place Order</button>
+        </div>
+      </form>
+
+      <!-- Right: summary -->
+      <aside class="cart-summary">
+        <h2>Order Summary</h2>
+
+        <ul id="coList" class="cart-list" role="list" style="margin-bottom:8px;"></ul>
+
+        <dl class="totals">
+          <div><dt>Subtotal</dt><dd id="coSub">$0.00</dd></div>
+          <div><dt>Shipping</dt><dd id="coShip">$0.00</dd></div>
+          <div class="grand"><dt>Total</dt><dd id="coTotal">$0.00</dd></div>
+        </dl>
+
+        <p class="muted">Payment is simulated for now. No real charge will be made.</p>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ================== FOOTER (same as index) ================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-grid">
+      <section aria-labelledby="footer-brand">
+        <h3 id="footer-brand" class="footer-title">EBELA STYLE</h3>
+        <p class="footer-text">Minimal apparel and footwear for everyday life.</p>
+      </section>
+
+      <nav aria-labelledby="footer-links">
+        <h3 id="footer-links" class="footer-title">Links</h3>
+        <ul class="footer-list">
+          <li><a href="products.html">Shop</a></li>
+          <li><a href="#">Shipping & Returns</a></li>
+          <li><a href="#">Terms & Privacy</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="footer-social">
+        <h3 id="footer-social" class="footer-title">Social</h3>
+        <ul class="footer-list">
+          <li><a href="#" aria-label="Instagram">Instagram</a></li>
+          <li><a href="#" aria-label="TikTok">TikTok</a></li>
+          <li><a href="#" aria-label="YouTube">YouTube</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="container footer-bottom">
+      <small>© <span id="year"></span> EBELA STYLE. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+  <script src="checkout.js" defer></script>
+</body>
+</html>

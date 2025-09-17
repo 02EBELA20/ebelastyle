@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ===== META ===== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EBELA STYLE — Minimal Apparel & Footwear</title>
+  <meta name="description" content="Modern, clean, minimal online store for tees, hoodies, pants, and footwear." />
+
+  <!-- ===== FAVICON (optional) ===== -->
+  <!-- <link rel="icon" href="assets/img/favicon.png" /> -->
+
+  <!-- ===== CSS ===== -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- ================== SKIP LINK (Accessibility) ================== -->
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- ================== SITE HEADER ================== -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <!-- Brand / Logo -->
+      <a href="index.html" class="brand" aria-label="EBELA STYLE Home">
+        <span class="brand-mark" aria-hidden="true">E</span>
+        <span class="brand-text">BELA STYLE</span>
+      </a>
+
+      <!-- ================= Desktop Navigation with Dropdown ================= -->
+      <nav class="main-nav" aria-label="Primary">
+        <ul class="nav-list">
+          <li><a href="index.html" aria-current="page">Home</a></li>
+
+          <!-- SHOP dropdown / mega menu -->
+          <li class="has-dropdown">
+            <button class="nav-link" aria-haspopup="true" aria-expanded="false" aria-controls="megaShop">
+              Shop <span class="chev" aria-hidden="true">▾</span>
+            </button>
+
+            <div id="megaShop" class="mega" role="menu" aria-label="Shop categories">
+              <div class="mega-inner">
+                <!-- Column 1: categories -->
+                <section class="mega-col" aria-labelledby="cat-title">
+                  <h3 id="cat-title" class="mega-title">Categories</h3>
+                  <ul class="mega-list" role="none">
+                    <li role="none"><a role="menuitem" href="products.html#tees">Tees</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#hoodies">Hoodies</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#pants">Pants</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#footwear">Footwear</a></li>
+                  </ul>
+                </section>
+
+                <!-- Column 2: quick filters -->
+                <section class="mega-col" aria-labelledby="filter-title">
+                  <h3 id="filter-title" class="mega-title">Quick filters</h3>
+                  <ul class="mega-tags">
+                    <li><a href="products.html?tag=new">New</a></li>
+                    <li><a href="products.html?tag=popular">Popular</a></li>
+                    <li><a href="products.html?tag=sale">Sale</a></li>
+                    <li><a href="products.html?tag=unisex">Unisex</a></li>
+                  </ul>
+                </section>
+
+                <!-- Column 3: promo -->
+                <aside class="mega-promo">
+                  <a href="products.html#hoodies" class="promo-card">
+                    <img src="assets/img/products/img/best2.jpg" alt="Soft hoodie — shop now">
+                    <span class="promo-text">Soft Hoodies →</span>
+                  </a>
+                </aside>
+              </div>
+            </div>
+          </li>
+
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+
+          <!-- Simple search (placeholder that submits to products.html) -->
+          <li class="nav-search">
+            <form action="products.html" method="get" role="search" aria-label="Site search">
+              <input name="q" type="search" placeholder="Search…" />
+            </form>
+          </li>
+
+          <!-- Cart -->
+          <li>
+            <a class="cart-link" href="cart.html" aria-label="View cart">
+              <span class="icon" aria-hidden="true">🛒</span><span class="cart-count" id="headerCartCount">0</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Mobile menu button -->
+      <button id="menuToggle" class="menu-toggle" aria-controls="mobileNav" aria-expanded="false">
+        <span class="visually-hidden">Toggle menu</span>
+        ☰
+      </button>
+    </div>
+
+    <!-- ================ Mobile Navigation Drawer with accordion ================ -->
+    <nav id="mobileNav" class="mobile-nav" aria-label="Mobile">
+      <ul>
+        <li><a href="index.html" aria-current="page">Home</a></li>
+
+        <li class="mobile-acc">
+          <button class="acc-btn" aria-expanded="false" aria-controls="mShop">Shop</button>
+          <div id="mShop" class="acc-panel">
+            <ul>
+              <li><a href="products.html#tees" class="js-close-nav">Tees</a></li>
+              <li><a href="products.html#hoodies" class="js-close-nav">Hoodies</a></li>
+              <li><a href="products.html#pants" class="js-close-nav">Pants</a></li>
+              <li><a href="products.html#footwear" class="js-close-nav">Footwear</a></li>
+              <li class="acc-sep"></li>
+              <li><a href="products.html?tag=new" class="js-close-nav">New</a></li>
+              <li><a href="products.html?tag=popular" class="js-close-nav">Popular</a></li>
+              <li><a href="products.html?tag=sale" class="js-close-nav">Sale</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li><a href="#about" class="js-close-nav">About</a></li>
+        <li><a href="#contact" class="js-close-nav">Contact</a></li>
+        <li><a href="cart.html" class="js-close-nav">Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ================== MAIN ================== -->
+  <main id="main-content">
+    <!-- ===== HERO / BANNER with simple slider ===== -->
+    <section class="hero" aria-label="Featured collection">
+      <div class="hero-slider" data-slider>
+        <!-- Slide 1 -->
+        <article class="slide is-active">
+          <img src="assets/img/products/img/best5.jpg" alt="New season essentials — tees and hoodies" loading="eager" />
+          <div class="slide-content container">
+            <h1 class="hero-title">New Season. Clean Lines.</h1>
+            <p class="hero-subtitle">Minimal staples for everyday — tees, hoodies, pants, and footwear.</p>
+            <a class="btn btn-primary" href="products.html">Shop Now</a>
+          </div>
+        </article>
+
+        <!-- Slide 2 -->
+        <article class="slide">
+          <img src="assets/img/products/img/best2.jpg" alt="Premium cotton t-shirts in classic colors" loading="lazy" />
+          <div class="slide-content container">
+            <h2 class="hero-title">Premium Tees</h2>
+            <p class="hero-subtitle">Ultra-soft cotton. Tailored fit. Built to last.</p>
+            <a class="btn btn-outline" href="products.html#tees">Explore Tees</a>
+          </div>
+        </article>
+
+        <!-- Slide 3 -->
+        <article class="slide">
+          <img src="assets/img/products/img/best3.jpg" alt="Comfort hoodies and relaxed pants" loading="lazy" />
+          <div class="slide-content container">
+            <h2 class="hero-title">Layer with Ease</h2>
+            <p class="hero-subtitle">Hoodies & joggers designed for comfort and movement.</p>
+            <a class="btn btn-outline" href="products.html#hoodies">Shop Hoodies</a>
+          </div>
+        </article>
+
+        <!-- Slider controls -->
+        <button class="slider-btn prev" data-prev aria-label="Previous slide">‹</button>
+        <button class="slider-btn next" data-next aria-label="Next slide">›</button>
+        <div class="dots" aria-label="Slide indicators" role="tablist" data-dots></div>
+      </div>
+    </section>
+
+    <!-- ===== NEW ARRIVALS ===== -->
+    <section class="section" aria-labelledby="new-arrivals-heading">
+      <div class="container">
+        <header class="section-header">
+          <h2 id="new-arrivals-heading">New Arrivals</h2>
+          <p class="section-subtitle">Fresh drops picked for you.</p>
+        </header>
+
+        <ul class="product-grid" role="list">
+          <!-- Card 1 -->
+          <li>
+            <article class="product-card">
+              <a href="product.html?sku=tee01" class="product-media">
+                <figure>
+                  <img src="assets/img/products/img/tee01-1.jpg" alt="Golden Graphic Tee, front" loading="lazy" />
+                  <figcaption class="visually-hidden">Golden Graphic Tee</figcaption>
+                </figure>
+              </a>
+              <div class="product-info">
+                <h3 class="product-title">Golden Graphic Tee</h3>
+                <p class="product-price">$29.00</p>
+                <div class="product-actions">
+                  <button class="btn btn-sm add-to-cart"
+                          data-sku="tee01"
+                          data-name="Golden Graphic Tee"
+                          data-price="29"
+                          data-img="assets/img/products/img/tee01-1.jpg">Add to Cart</button>
+                  <a class="btn btn-sm btn-ghost" href="product.html?sku=tee01">Details</a>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <!-- Card 2 -->
+          <li>
+            <article class="product-card">
+              <a href="product.html?sku=tee01" class="product-media">
+                <figure>
+                  <img src="assets/img/products/img/tee01-2.jpg" alt="Golden Graphic Tee, back" loading="lazy" />
+                  <figcaption class="visually-hidden">Golden Graphic Tee back</figcaption>
+                </figure>
+              </a>
+              <div class="product-info">
+                <h3 class="product-title">Golden Tee — Back Print</h3>
+                <p class="product-price">$29.00</p>
+                <div class="product-actions">
+                  <button class="btn btn-sm add-to-cart"
+                          data-sku="tee01"
+                          data-name="Golden Tee — Back"
+                          data-price="29"
+                          data-img="assets/img/products/img/tee01-2.jpg">Add to Cart</button>
+                  <a class="btn btn-sm btn-ghost" href="product.html?sku=tee01">Details</a>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <!-- Card 3 -->
+          <li>
+            <article class="product-card">
+              <a href="product.html?sku=tee01" class="product-media">
+                <figure>
+                  <img src="assets/img/products/img/tee01-3.jpg" alt="Golden Graphic Tee close-up" loading="lazy" />
+                  <figcaption class="visually-hidden">Golden Tee detail</figcaption>
+                </figure>
+              </a>
+              <div class="product-info">
+                <h3 class="product-title">Golden Tee — Detail</h3>
+                <p class="product-price">$29.00</p>
+                <div class="product-actions">
+                  <button class="btn btn-sm add-to-cart"
+                          data-sku="tee01"
+                          data-name="Golden Tee — Detail"
+                          data-price="29"
+                          data-img="assets/img/products/img/tee01-3.jpg">Add to Cart</button>
+                  <a class="btn btn-sm btn-ghost" href="product.html?sku=tee01">Details</a>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <!-- Card 4 -->
+          <li>
+            <article class="product-card">
+              <a href="product.html?sku=ewl01" class="product-media">
+                <figure>
+                  <!-- Use your actual filename below (I used the long one you pasted) -->
+                  <img src="assets/img/products/img/ewl-golden-goose-april-benshosan-04-05c87c8cd8ac4835a49585763e0ef57e.jpeg"
+                       alt="Golden logo print on black tee" loading="lazy" />
+                  <figcaption class="visually-hidden">EWL Golden Graphic</figcaption>
+                </figure>
+              </a>
+              <div class="product-info">
+                <h3 class="product-title">EWL Golden Graphic</h3>
+                <p class="product-price">$32.00</p>
+                <div class="product-actions">
+                  <button class="btn btn-sm add-to-cart"
+                          data-sku="ewl01"
+                          data-name="EWL Golden Graphic"
+                          data-price="32"
+                          data-img="assets/img/products/img/ewl-golden-goose-april-benshosan-04-05c87c8cd8ac4835a49585763e0ef57e.jpeg">Add to Cart</button>
+                  <a class="btn btn-sm btn-ghost" href="product.html?sku=ewl01">Details</a>
+                </div>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== MOST POPULAR ===== -->
+    <section class="section" aria-labelledby="popular-heading">
+      <div class="container">
+        <header class="section-header">
+          <h2 id="popular-heading">Most Popular</h2>
+          <p class="section-subtitle">Community favorites loved by our customers.</p>
+        </header>
+
+        <ul class="product-grid" role="list">
+          <li>
+            <article class="product-card">
+              <a class="product-media" href="product.html?sku=best4">
+                <figure>
+                  <img src="assets/img/products/img/best4.jpg" alt="Minimal sneakers in white" loading="lazy" />
+                  <figcaption class="visually-hidden">Minimal white sneakers</figcaption>
+                </figure>
+              </a>
+              <div class="product-info">
+                <h3 class="product-title">Minimal Sneakers</h3>
+                <p class="product-price">$79.00</p>
+                <div class="product-actions">
+                  <button class="btn btn-sm add-to-cart"
+                          data-sku="best4"
+                          data-name="Minimal Sneakers"
+                          data-price="79"
+                          data-img="assets/img/products/img/best4.jpg">Add to Cart</button>
+                  <a class="btn btn-sm btn-ghost" href="product.html?sku=best4">Details</a>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="product-card">
+              <a class="product-media" href="product.html?sku=best2">
+                <figure>
+                  <img src="assets/img/products/img/best2.jpg" alt="Classic hoodie in grey" loading="lazy" />
+                  <figcaption class="visually-hidden">Classic grey hoodie</figcaption>
+                </figure>
+              </a>
+              <div class="product-info">
+                <h3 class="product-title">Classic Hoodie</h3>
+                <p class="product-price">$59.00</p>
+                <div class="product-actions">
+                  <button class="btn btn-sm add-to-cart"
+                          data-sku="best2"
+                          data-name="Classic Hoodie"
+                          data-price="59"
+                          data-img="assets/img/products/img/best2.jpg">Add to Cart</button>
+                  <a class="btn btn-sm btn-ghost" href="product.html?sku=best2">Details</a>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="product-card">
+              <a class="product-media" href="product.html?sku=best3">
+                <figure>
+                  <img src="assets/img/products/img/best3.jpg" alt="Relaxed fit pants in black" loading="lazy" />
+                  <figcaption class="visually-hidden">Relaxed pants</figcaption>
+                </figure>
+              </a>
+              <div class="product-info">
+                <h3 class="product-title">Relaxed Pants</h3>
+                <p class="product-price">$49.00</p>
+                <div class="product-actions">
+                  <button class="btn btn-sm add-to-cart"
+                          data-sku="best3"
+                          data-name="Relaxed Pants"
+                          data-price="49"
+                          data-img="assets/img/products/img/best3.jpg">Add to Cart</button>
+                  <a class="btn btn-sm btn-ghost" href="product.html?sku=best3">Details</a>
+                </div>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT / BRAND STORY ===== -->
+    <section id="about" class="section section--alt" aria-labelledby="about-heading">
+      <div class="container">
+        <header class="section-header">
+          <h2 id="about-heading">About EBELA STYLE</h2>
+          <p class="section-subtitle">Designed in Georgia, crafted for the world.</p>
+        </header>
+        <div class="about-grid">
+          <p>
+            We believe in simple forms, premium materials, and honest pricing.
+            Each piece is designed to be mixed and matched — a wardrobe of essentials
+            that supports an active, modern life. Minimal look, maximum quality.
+          </p>
+          <p>
+            Our garments are made with comfort and durability in mind. From soft cotton
+            tees to relaxed pants and versatile hoodies, we obsess over fit and feel.
+            Thank you for being part of our journey.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT / NEWSLETTER ===== -->
+    <section id="contact" class="section" aria-labelledby="contact-heading">
+      <div class="container">
+        <header class="section-header">
+          <h2 id="contact-heading">Stay in Touch</h2>
+          <p class="section-subtitle">Join our list for early access to drops.</p>
+        </header>
+
+        <form class="newsletter" action="#" method="post" aria-label="Newsletter signup">
+          <label for="email" class="visually-hidden">Email</label>
+          <input id="email" name="email" type="email" placeholder="Enter your email" required />
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================== FOOTER ================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-grid">
+      <section aria-labelledby="footer-brand">
+        <h3 id="footer-brand" class="footer-title">EBELA STYLE</h3>
+        <p class="footer-text">Minimal apparel and footwear for everyday life.</p>
+      </section>
+
+      <nav aria-labelledby="footer-links">
+        <h3 id="footer-links" class="footer-title">Links</h3>
+        <ul class="footer-list">
+          <li><a href="products.html">Shop</a></li>
+          <li><a href="#">Shipping & Returns</a></li>
+          <li><a href="#">Terms & Privacy</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="footer-social">
+        <h3 id="footer-social" class="footer-title">Social</h3>
+        <ul class="footer-list">
+          <li><a href="#" aria-label="Instagram">Instagram</a></li>
+          <li><a href="#" aria-label="TikTok">TikTok</a></li>
+          <li><a href="#" aria-label="YouTube">YouTube</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="container footer-bottom">
+      <small>© <span id="year"></span> EBELA STYLE. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <!-- ===== JS ===== -->
+  <script src="app.js" defer></script>
+</body>
+</html>
