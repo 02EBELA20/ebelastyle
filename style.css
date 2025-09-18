@@ -385,3 +385,103 @@ body{
   max-width: var(--narrow);
   margin-inline:auto;
 }
+
+
+/* ===== Product page — refreshed gallery & lightbox ===== */
+
+/* ორნაბიჯიანი გრიდი: მარცხნივ გალერეა, მარჯვნივ ინფო */
+.product-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+@media (min-width: 992px) {
+  .product-layout {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* გალერეა */
+.gallery { position: relative; }
+@media (min-width: 992px) {
+  /* desktop-ზე ეს დარჩება ხილულად სქროლზე */
+  .gallery { position: sticky; top: 96px; }
+}
+
+/* მთავარი კადრი — ფიქსირებული ასპექტი, contain */
+.gallery .hero-img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-height: min(78vh, 820px);
+  background: #0e0e0e;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,.35);
+  cursor: zoom-in;               /* მიგვითითებს რომ იდებოდა */
+}
+.gallery .hero-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;         /* ← ახლა ავსებს ჩარჩოს */
+  object-position: center;   /* ცენტრში „კროპავს“ საჭიროებისამებრ */
+  display: block;
+}
+
+
+/* თამბები */
+.gallery .thumbs {
+  margin-top: 12px;
+  display: flex; gap: 10px;
+  overflow-x: auto; padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+.gallery .thumb {
+  border: none; background: transparent; padding: 0;
+  flex: 0 0 auto;
+  width: 74px; height: 74px;
+  border-radius: 12px; overflow: hidden;
+  opacity: .85;
+  outline: 2px solid transparent;
+  transition: transform .15s ease, opacity .15s ease, outline-color .15s ease;
+}
+.gallery .thumb:hover { transform: translateY(-2px); opacity: 1; }
+.gallery .thumb.is-active { outline-color: rgba(255,255,255,.35); opacity: 1; }
+.gallery .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Product info little polish */
+.product-info header { margin-bottom: .75rem; }
+.product-info .price { font-weight: 600; letter-spacing: .2px; }
+
+/* ===== Lightbox (zoom) ===== */
+.lightbox {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,.86);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.lightbox[hidden] { display: none; }
+
+.lightbox__img {
+  max-width: min(92vw, 1200px);
+  max-height: 86vh;
+  border-radius: 12px;
+  box-shadow: 0 10px 50px rgba(0,0,0,.5);
+  object-fit: contain;
+  user-select: none;
+}
+
+.lb-btn {
+  position: absolute;
+  width: 44px; height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.08);
+  color: #fff; font-size: 22px; line-height: 42px;
+}
+.lb-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+[data-lb-prev] { left: 24px; top: 50%; transform: translateY(-50%); }
+[data-lb-next] { right: 24px; top: 50%; transform: translateY(-50%); }
+[data-lb-close]{ right: 16px; top: 16px; font-size: 18px; line-height: 40px; }
