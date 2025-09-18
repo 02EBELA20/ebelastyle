@@ -442,12 +442,13 @@ body{
 .swatch .dot[data-color="gold"]{ background:#d4af37; }
 .swatch-text{ text-transform:capitalize; }
 
-.chip{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--outline); border-radius:999px; padding:6px 10px; cursor:pointer; }
-.chip input{ margin-right:4px; }
+.chip{; ;display:inline-flex; align-items:center; gap:6px; border:1px solid var(--outline); border-radius:999px; padding:6px 10px; cursor:pointer; }
+.chip input{  width: 55% ;margin-right:4px; }
+
 
 .qty-row{ display:flex; align-items:center; gap:12px; margin-top:6px; }
 .qty{ display:inline-flex; align-items:center; border:1px solid var(--outline); border-radius:10px; }
-.qty input{ width:56px; background:#0f0f0f; color:#fff; border:0; text-align:center; padding:8px; }
+.qty input{ width:26px; background:#0f0f0f; color:#fff; border:0; text-align:center; padding:8px; }
 .qty-btn{ background:transparent; border:0; padding:8px 10px; color:#fff; cursor:pointer; }
 
 .pdp-actions{ display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }

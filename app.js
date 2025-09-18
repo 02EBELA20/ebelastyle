@@ -1,5 +1,5 @@
 /* =========================
-   EBELA STYLE — shared core
+   EBELA STYLE — shared core (fixed)
    ========================= */
 
 /* ---------- USER / AUTH helpers (demo storage) ---------- */
@@ -76,10 +76,102 @@ function addToCartLine(line) {
   else cart.push({ ...line, qty: line.qty || 1 });
   localStorage.setItem('cart', JSON.stringify(cart));
   updateCartCount(cart);
+
   const btn = document.getElementById('pdpAddBtn');
-  if (btn) { const t = btn.textContent; btn.disabled = true; btn.textContent = 'Added ✓'; setTimeout(()=>{btn.disabled=false; btn.textContent=t;}, 900); }
+  if (btn) {
+    const t = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Added ✓';
+    setTimeout(()=>{btn.disabled=false; btn.textContent=t;}, 900);
+  }
 }
 window.__CART__ = { addToCartLine };
+
+/* =========================================================
+   ADD TO CART — BULLETPROOF GLOBAL DELEGATION
+   მუშაობს: Home/Most Popular, Products grid, PDP.
+   არ საჭიროებს სპეციალურ data-ატრიბუტებს (მაგრამ რომ ქონდეს — უკეთესია).
+   ========================================================= */
+
+/* Helpers to extract SKU anywhere */
+function parseSkuFromHref(href) {
+  if (!href) return '';
+  try {
+    const url = new URL(href, location.href);
+    return url.searchParams.get('sku') || '';
+  } catch { return ''; }
+}
+function findSku(scope, btn) {
+  // 1) explicit data-sku on button
+  if (btn && btn.dataset && btn.dataset.sku) return btn.dataset.sku;
+
+  // 2) data-sku on card/container
+  const host = btn ? btn.closest('[data-sku]') : null;
+  if (host && host.dataset.sku) return host.dataset.sku;
+
+  // 3) any nested element with data-sku
+  const nest = (scope || document).querySelector('[data-sku]');
+  if (nest && nest.dataset.sku) return nest.dataset.sku;
+
+  // 4) details/product link: product.html?sku=...
+  const link = (scope || document).querySelector('a[href*="product.html"]')
+           || (btn ? btn.parentElement?.querySelector('a[href*="product.html"]') : null);
+  const skuFromLink = parseSkuFromHref(link?.getAttribute('href'));
+  if (skuFromLink) return skuFromLink;
+
+  return '';
+}
+function findQty(scope, btn) {
+  if (btn?.dataset?.qty) {
+    const v = Number(btn.dataset.qty);
+    if (v > 0) return v;
+  }
+  const byName = scope?.querySelector?.('[name="qty"], [name="quantity"]');
+  if (byName) return Math.max(1, Number(byName.value || 1));
+  const inQty = scope?.querySelector?.('.qty input');
+  if (inQty) return Math.max(1, Number(inQty.value || 1));
+  return 1;
+}
+function looksLikeAddButton(el) {
+  if (!el) return false;
+  if (el.matches('[data-add-to-cart], .js-add-to-cart, .add-to-cart, .btn-add, [data-action="add"]')) return true;
+  const txt = (el.textContent || '').trim().toLowerCase();
+  return txt === 'add to cart' || txt === 'add';
+}
+
+/* The actual delegation */
+document.addEventListener('click', (e) => {
+  const clickable = e.target.closest('button, a');
+  if (!clickable) return;
+
+  // only handle if it "looks like" an Add to Cart
+  if (!looksLikeAddButton(clickable)) return;
+
+  // don't navigate
+  e.preventDefault();
+  e.stopPropagation();
+
+  // scope = product card / pdp form
+  const scope =
+    clickable.closest('[data-pdp], .product-detail, .product-card, li, article, section') || document;
+
+  const sku   = findSku(scope, clickable);
+  const qty   = findQty(scope, clickable);
+  const color = scope.querySelector?.('[name="color"]')?.value || clickable.dataset?.color || '';
+  const size  = scope.querySelector?.('[name="size"]')?.value  || clickable.dataset?.size  || '';
+
+  if (!sku) { console.warn('Add to Cart: missing SKU'); return; }
+
+  addToCartLine({ sku, qty, color, size });
+
+  // tiny toast
+  const t = document.createElement('div');
+  t.textContent = 'Added to cart';
+  t.style.cssText =
+    'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);' +
+    'background:#111;color:#fff;border:1px solid #2a2a2a;padding:10px 14px;' +
+    'border-radius:10px;z-index:9999';
+  document.body.appendChild(t); setTimeout(()=>t.remove(), 1100);
+});
 
 /* ---------- ACCOUNT PAGE controller ---------- */
 function bindAccountPage() {
@@ -113,14 +205,11 @@ function bindAccountPage() {
     updateAuthLink();
   }
 
-  // decide initial
   if (isLogged()) showAccount(); else showAuth();
 
-  // toggles
   goRegister?.addEventListener('click', showRegister);
   goLogin?.addEventListener('click', showAuth);
 
-  // login
   document.getElementById('loginForm')?.addEventListener('submit', e => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
@@ -132,7 +221,6 @@ function bindAccountPage() {
     catch (ex) { err.textContent = ex.message || 'Sign in failed.'; }
   });
 
-  // register
   document.getElementById('registerForm')?.addEventListener('submit', e => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
@@ -147,10 +235,8 @@ function bindAccountPage() {
     catch (ex) { err.textContent = ex.message || 'Registration failed.'; }
   });
 
-  // logout
   document.getElementById('logoutBtn')?.addEventListener('click', () => { signOut(); showAuth(); });
 
-  // optional: simple orders manage buttons (თუ გაქვს order render — დატოვე)
   const manageBtn = document.getElementById('manageOrdersBtn');
   const bulkPanel = document.getElementById('bulkPanel');
   manageBtn?.addEventListener('click', () => { bulkPanel.hidden = false; manageBtn.hidden = true; document.querySelector('.account-orders')?.classList.add('is-managing'); });
@@ -158,7 +244,7 @@ function bindAccountPage() {
 }
 document.addEventListener('DOMContentLoaded', bindAccountPage);
 
-/* ---------- HERO SLIDER re-init ---------- */
+/* ---------- HERO SLIDER (auto-play + pause on hover/focus) ---------- */
 function initHeroSlider() {
   const root = document.querySelector('.hero-slider');
   if (!root) return;
@@ -187,21 +273,36 @@ function initHeroSlider() {
     b.type = 'button';
     b.className = 'dot';
     b.setAttribute('aria-selected', String(idx === i));
-    b.addEventListener('click', () => show(idx));
+    b.addEventListener('click', () => { show(idx); restart(); });
     dotsWrap.appendChild(b);
   });
   show(i);
 
-  root.querySelector('.slider-btn.prev')?.addEventListener('click', () => show(i - 1));
-  root.querySelector('.slider-btn.next')?.addEventListener('click', () => show(i + 1));
+  root.querySelector('.slider-btn.prev')?.addEventListener('click', () => { show(i - 1); restart(); });
+  root.querySelector('.slider-btn.next')?.addEventListener('click', () => { show(i + 1); restart(); });
 
   let x0 = null;
   root.addEventListener('pointerdown', e => { x0 = e.clientX; });
   root.addEventListener('pointerup', e => {
     if (x0 == null) return;
     const dx = e.clientX - x0;
-    if (Math.abs(dx) > 40) show(i + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 40) { show(i + (dx < 0 ? 1 : -1)); restart(); }
     x0 = null;
   });
+
+  // --- AUTOPLAY ---
+  const INTERVAL = 5000; // ms
+  let timer = null;
+  function play(){ stop(); timer = setInterval(() => show(i + 1), INTERVAL); }
+  function stop(){ if (timer) { clearInterval(timer); timer = null; } }
+  function restart(){ play(); }
+
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', play);
+  root.addEventListener('focusin', stop);
+  root.addEventListener('focusout', play);
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : play());
+
+  play();
 }
 document.addEventListener('DOMContentLoaded', initHeroSlider);
