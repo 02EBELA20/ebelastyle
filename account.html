@@ -1,282 +1,177 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Account — EBELA STYLE</title>
-  <meta name="description" content="Sign in, create an account, edit profile and view your orders." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ================== HEADER ================== -->
+  <!-- ===== HEADER (არსებული markup თუ გაქვს, დატოვე. ეს მინიმალურია) ===== -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a href="index.html" class="brand" aria-label="EBELA STYLE Home">
-        <span class="brand-mark" aria-hidden="true">E</span>
-        <span class="brand-text">BELA STYLE</span>
+      <a class="brand" href="index.html">
+        <span class="brand-mark">E</span><span class="brand-text">BELA STYLE</span>
       </a>
 
-      <nav class="main-nav" aria-label="Primary">
+      <nav class="main-nav" aria-label="Main">
         <ul class="nav-list">
           <li><a href="index.html">Home</a></li>
-
           <li class="has-dropdown">
-            <button class="nav-link" aria-haspopup="true" aria-expanded="false" aria-controls="megaShop">
-              Shop <span class="chev" aria-hidden="true">▾</span>
-            </button>
-            <div id="megaShop" class="mega" role="menu" aria-label="Shop categories">
+            <button class="nav-link" aria-haspopup="true" aria-expanded="false">Shop ▾</button>
+            <div class="mega" role="dialog">
               <div class="mega-inner">
-                <section class="mega-col" aria-labelledby="cat-title">
-                  <h3 id="cat-title" class="mega-title">Categories</h3>
-                  <ul class="mega-list" role="none">
-                    <li role="none"><a role="menuitem" href="products.html#tees">Tees</a></li>
-                    <li role="none"><a role="menuitem" href="products.html#hoodies">Hoodies</a></li>
-                    <li role="none"><a role="menuitem" href="products.html#pants">Pants</a></li>
-                    <li role="none"><a role="menuitem" href="products.html#footwear">Footwear</a></li>
+                <div>
+                  <p class="mega-title">Men</p>
+                  <ul class="mega-list">
+                    <li><a href="products.html?tag=tees">Tees</a></li>
+                    <li><a href="products.html?tag=hoodies">Hoodies</a></li>
                   </ul>
-                </section>
-
-                <section class="mega-col" aria-labelledby="filter-title">
-                  <h3 id="filter-title" class="mega-title">Quick filters</h3>
-                  <ul class="mega-tags">
-                    <li><a href="products.html?tag=new">New</a></li>
-                    <li><a href="products.html?tag=popular">Popular</a></li>
-                    <li><a href="products.html?tag=sale">Sale</a></li>
+                </div>
+                <div>
+                  <p class="mega-title">Women</p>
+                  <ul class="mega-list">
+                    <li><a href="products.html?tag=pants">Pants</a></li>
                     <li><a href="products.html?tag=unisex">Unisex</a></li>
                   </ul>
-                </section>
-
-                <aside class="mega-promo">
-                  <a href="products.html#hoodies" class="promo-card">
-                    <img src="assets/img/products/img/best2.jpg" alt="Soft hoodie — shop now">
-                    <span class="promo-text">Soft Hoodies →</span>
+                </div>
+                <div class="mega-promo">
+                  <a class="promo-card" href="products.html">
+                    <img src="assets/hero1.jpg" alt="">
+                    <span class="promo-text">New Arrivals</span>
                   </a>
-                </aside>
+                </div>
               </div>
             </div>
           </li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
 
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
-
-          <li class="nav-search">
-            <form action="products.html" method="get" role="search" aria-label="Site search">
-              <input name="q" type="search" placeholder="Search…" />
-            </form>
-          </li>
-
-          <li>
-            <a class="cart-link" href="cart.html" aria-label="View cart">
-              <span class="icon" aria-hidden="true">🛒</span><span class="cart-count" id="headerCartCount">0</span>
-            </a>
-          </li>
+          <!-- აქ ჩაისმება Account/Sign In თუ არ არის -->
+          <li class="nav-account"><a id="accountLink" href="account.html">Sign In</a></li>
         </ul>
       </nav>
 
-      <button id="menuToggle" class="menu-toggle" aria-controls="mobileNav" aria-expanded="false">
-        <span class="visually-hidden">Toggle menu</span> ☰
-      </button>
+      <div class="nav-search"><input type="search" placeholder="Search…" /></div>
+
+      <a class="cart-link" href="cart.html" aria-label="Cart">
+        <span>🛒</span><span class="cart-count" data-cart-count>0</span>
+      </a>
     </div>
-
-    <nav id="mobileNav" class="mobile-nav" aria-label="Mobile">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-
-        <li class="mobile-acc">
-          <button class="acc-btn" aria-expanded="false" aria-controls="mShop">Shop</button>
-          <div id="mShop" class="acc-panel">
-            <ul>
-              <li><a href="products.html#tees" class="js-close-nav">Tees</a></li>
-              <li><a href="products.html#hoodies" class="js-close-nav">Hoodies</a></li>
-              <li><a href="products.html#pants" class="js-close-nav">Pants</a></li>
-              <li><a href="products.html#footwear" class="js-close-nav">Footwear</a></li>
-              <li class="acc-sep"></li>
-              <li><a href="products.html?tag=new" class="js-close-nav">New</a></li>
-              <li><a href="products.html?tag=popular" class="js-close-nav">Popular</a></li>
-              <li><a href="products.html?tag=sale" class="js-close-nav">Sale</a></li>
-            </ul>
-          </div>
-        </li>
-
-        <li><a href="index.html#about" class="js-close-nav">About</a></li>
-        <li><a href="index.html#contact" class="js-close-nav">Contact</a></li>
-        <li><a href="cart.html" class="js-close-nav">Cart</a></li>
-      </ul>
-    </nav>
   </header>
-  <!-- ================== /HEADER ================== -->
 
-  <main id="main" class="section">
-    <div class="container">
-      <header class="section-header">
-        <h1 style="margin:0">My Account</h1>
-        <p class="section-subtitle">Sign in or create an account. View and manage your profile & orders.</p>
-      </header>
+  <main id="main" class="container" style="padding-block:24px">
 
-      <!-- NOT LOGGED IN -->
-      <div id="authViews" class="account-auth" hidden>
-        <div class="form-card" style="margin-bottom:16px;">
-          <h2 style="margin-top:0;">Sign In</h2>
-          <form id="signinForm" class="form-grid" novalidate>
-            <div class="field wide">
-              <label for="siEmail">Email</label>
-              <input id="siEmail" name="email" type="email" required />
-              <small class="err"></small>
-            </div>
-            <div class="field wide">
-              <label for="siPass">Password</label>
-              <input id="siPass" name="password" type="password" required />
-              <small class="err"></small>
-            </div>
-            <div class="form-actions">
-              <button class="btn btn-primary" type="submit">Sign In</button>
-            </div>
-          </form>
-        </div>
+    <!-- =================  AUTH VIEW (Sign in + Register)  ================= -->
+    <section class="account-auth" id="authSection">
+      <div class="form-card" id="loginCard">
+        <h2 style="margin-top:0">Sign in</h2>
+        <form id="loginForm" autocomplete="on">
+          <div class="field">
+            <label for="liEmail">Email</label>
+            <input id="liEmail" name="email" type="email" required />
+          </div>
+          <div class="field">
+            <label for="liPass">Password</label>
+            <input id="liPass" name="password" type="password" required />
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Sign in</button>
+            <button class="btn btn-ghost" type="button" id="goRegister">Create account</button>
+          </div>
+          <p class="err" id="loginErr"></p>
+        </form>
+      </div>
 
-        <div class="form-card">
-          <h2 style="margin-top:0;">Create Account</h2>
-          <form id="signupForm" class="form-grid" novalidate>
-            <div class="field">
-              <label for="suFirst">First name</label>
-              <input id="suFirst" name="firstName" required />
-              <small class="err"></small>
-            </div>
-            <div class="field">
-              <label for="suLast">Last name</label>
-              <input id="suLast" name="lastName" required />
-              <small class="err"></small>
-            </div>
-            <div class="field wide">
-              <label for="suEmail">Email</label>
-              <input id="suEmail" name="email" type="email" required />
-              <small class="err"></small>
-            </div>
-            <div class="field">
-              <label for="suPass">Password</label>
-              <input id="suPass" name="password" type="password" minlength="4" required />
-              <small class="err"></small>
-            </div>
-            <div class="field">
-              <label for="suPass2">Confirm password</label>
-              <input id="suPass2" name="password2" type="password" minlength="4" required />
-              <small class="err"></small>
-            </div>
-            <div class="form-actions">
-              <button class="btn btn-primary" type="submit">Create Account</button>
-            </div>
-          </form>
-          <p class="muted" style="margin-top:8px;">Demo only — passwords are stored locally (not secure).</p>
+      <div class="form-card" id="registerCard" hidden>
+        <h2 style="margin-top:0">Create account</h2>
+        <form id="registerForm" autocomplete="on">
+          <div class="field">
+            <label for="rgName">Full name</label>
+            <input id="rgName" name="name" required />
+          </div>
+          <div class="field">
+            <label for="rgEmail">Email</label>
+            <input id="rgEmail" name="email" type="email" required />
+          </div>
+          <div class="field">
+            <label for="rgPass">Password</label>
+            <input id="rgPass" name="password" type="password" minlength="6" required />
+          </div>
+          <div class="field">
+            <label for="rgPass2">Confirm password</label>
+            <input id="rgPass2" name="password2" type="password" minlength="6" required />
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Create account</button>
+            <button class="btn btn-ghost" type="button" id="goLogin">I already have an account</button>
+          </div>
+          <p class="err" id="regErr"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- =================  ACCOUNT VIEW (როცა ლოგინშია)  ================= -->
+    <section id="accountView" hidden>
+      <div class="form-card">
+        <h2 style="margin-top:0">Welcome, <span class="user-name">—</span></h2>
+        <p class="muted" style="margin:0 0 8px">Manage your profile and orders below.</p>
+        <div class="form-actions">
+          <a class="btn btn-outline" href="products.html">Shop more</a>
+          <button class="btn" id="logoutBtn">Log out</button>
         </div>
       </div>
 
-      <!-- LOGGED IN -->
-      <div id="accountView" class="form-card" hidden>
-        <div class="account-top">
-          <div class="avatar" id="accAvatar" aria-hidden="true">U</div>
-          <div>
-            <h2 style="margin:0;">Welcome, <span id="accName"></span>!</h2>
-            <p id="accEmail" class="muted" style="margin:2px 0 8px;"></p>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <a class="btn btn-outline" href="products.html">Shop More</a>
-              <button id="logoutBtn" class="btn btn-ghost">Log out</button>
-            </div>
+      <!-- თქვენი არსებული პროფილის/მისამართების/ორდერების ბლოკები შეგიძლიათ აქქონდეთ -->
+      <div class="form-card account-orders">
+        <h3 style="margin-top:0">Your Orders</h3>
+        <div class="orders-toolbar">
+          <button class="btn btn-ghost" id="manageOrdersBtn">Manage</button>
+          <div class="bulk-panel" hidden id="bulkPanel">
+            <span class="bulk-label">Selected:</span>
+            <button class="btn btn-danger btn-sm" id="bulkDelete">Delete</button>
+            <button class="btn btn-ghost btn-sm" id="bulkCancel">Cancel</button>
           </div>
         </div>
-
-        <hr style="border-color:var(--outline); margin:16px 0;">
-
-        <!-- Profile editor -->
-        <details class="pdp-details" open>
-          <summary><strong>Profile</strong> — shipping/contact info</summary>
-          <form id="profileForm" class="form-grid" style="margin-top:10px;">
-            <div class="field">
-              <label for="pfFirst">First name</label>
-              <input id="pfFirst" name="firstName" required />
-              <small class="err"></small>
-            </div>
-            <div class="field">
-              <label for="pfLast">Last name</label>
-              <input id="pfLast" name="lastName" required />
-              <small class="err"></small>
-            </div>
-            <div class="field wide">
-              <label for="pfEmail">Email</label>
-              <input id="pfEmail" name="email" type="email" required />
-              <small class="err"></small>
-            </div>
-            <div class="field">
-              <label for="pfPhone">Phone</label>
-              <input id="pfPhone" name="phone" />
-            </div>
-            <div class="field wide">
-              <label for="pfAddress">Address</label>
-              <input id="pfAddress" name="address" />
-            </div>
-            <div class="field">
-              <label for="pfCity">City</label>
-              <input id="pfCity" name="city" />
-            </div>
-            <div class="field">
-              <label for="pfState">State</label>
-              <input id="pfState" name="state" />
-            </div>
-            <div class="field">
-              <label for="pfZip">ZIP</label>
-              <input id="pfZip" name="zip" />
-            </div>
-            <div class="field">
-              <label for="pfCountry">Country</label>
-              <input id="pfCountry" name="country" value="United States" />
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Save Profile</button>
-            </div>
-          </form>
-        </details>
-
-        <hr style="border-color:var(--outline); margin:16px 0;">
-
-        <h3>Your Orders</h3>
-        <div id="ordersWrap"></div>
+        <div id="ordersList">
+          <!-- თქვენი არსებული რენდერი დატოვეთ; placeholder: -->
+          <p class="muted">No orders yet.</p>
+        </div>
       </div>
-    </div>
+    </section>
   </main>
 
-  <!-- ================== FOOTER ================== -->
-  <footer class="site-footer" role="contentinfo">
+  <footer class="site-footer">
     <div class="container footer-grid">
-      <section aria-labelledby="footer-brand">
-        <h3 id="footer-brand" class="footer-title">EBELA STYLE</h3>
+      <section>
+        <h3 class="footer-title">EBELA STYLE</h3>
         <p class="footer-text">Minimal apparel and footwear for everyday life.</p>
       </section>
-
-      <nav aria-labelledby="footer-links">
-        <h3 id="footer-links" class="footer-title">Links</h3>
+      <nav>
+        <h3 class="footer-title">Links</h3>
         <ul class="footer-list">
           <li><a href="products.html">Shop</a></li>
-          <li><a href="#">Shipping & Returns</a></li>
-          <li><a href="#">Terms & Privacy</a></li>
+          <li><a href="#">Shipping &amp; Returns</a></li>
+          <li><a href="#">Terms &amp; Privacy</a></li>
         </ul>
       </nav>
-
-      <nav aria-labelledby="footer-social">
-        <h3 id="footer-social" class="footer-title">Social</h3>
+      <nav>
+        <h3 class="footer-title">Social</h3>
         <ul class="footer-list">
-          <li><a href="#" aria-label="Instagram">Instagram</a></li>
-          <li><a href="#" aria-label="TikTok">TikTok</a></li>
-          <li><a href="#" aria-label="YouTube">YouTube</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">YouTube</a></li>
         </ul>
       </nav>
     </div>
-    <div class="container footer-bottom">
-      <small>© <span id="year"></span> EBELA STYLE. All rights reserved.</small>
+    <div class="footer-bottom">
+      © <span id="year"></span> EBELA STYLE. All rights reserved.
     </div>
   </footer>
 
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   <script src="app.js" defer></script>
-  <script src="account.js" defer></script>
 </body>
 </html>

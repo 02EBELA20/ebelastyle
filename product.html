@@ -1,171 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Product — EBELA STYLE</title>
-  <meta name="description" content="Product details page." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- HEADER (same as other pages) -->
+  <!-- HEADER (მოკლე ვერსია; შეგიძლია შენი არსებული ჩასვა) -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a href="index.html" class="brand" aria-label="EBELA STYLE Home">
-        <span class="brand-mark">E</span><span class="brand-text">BELA STYLE</span>
+      <a class="brand" href="index.html">
+        <span class="brand-mark">E</span>
+        <span class="brand-text">BELA STYLE</span>
       </a>
 
-      <nav class="main-nav" aria-label="Primary">
+      <nav class="main-nav" aria-label="Main">
         <ul class="nav-list">
           <li><a href="index.html">Home</a></li>
           <li class="has-dropdown">
-            <button class="nav-link" aria-haspopup="true" aria-expanded="false" aria-controls="megaShop">
-              Shop <span class="chev" aria-hidden="true">▾</span>
-            </button>
-            <div id="megaShop" class="mega" role="menu" aria-label="Shop categories">
-              <div class="mega-inner">
-                <section class="mega-col" aria-labelledby="cat-title">
-                  <h3 id="cat-title" class="mega-title">Categories</h3>
-                  <ul class="mega-list">
-                    <li><a href="products.html#tees">Tees</a></li>
-                    <li><a href="products.html#hoodies">Hoodies</a></li>
-                    <li><a href="products.html#pants">Pants</a></li>
-                    <li><a href="products.html#footwear">Footwear</a></li>
-                  </ul>
-                </section>
-                <section class="mega-col" aria-labelledby="filter-title">
-                  <h3 id="filter-title" class="mega-title">Quick filters</h3>
-                  <ul class="mega-tags">
-                    <li><a href="products.html?tag=new">New</a></li>
-                    <li><a href="products.html?tag=popular">Popular</a></li>
-                    <li><a href="products.html?tag=sale">Sale</a></li>
-                    <li><a href="products.html?tag=unisex">Unisex</a></li>
-                  </ul>
-                </section>
-                <aside class="mega-promo">
-                  <a href="products.html#hoodies" class="promo-card">
-                    <img src="assets/img/products/img/best2.jpg" alt="Soft hoodie — shop now">
-                    <span class="promo-text">Soft Hoodies →</span>
-                  </a>
-                </aside>
-              </div>
-            </div>
+            <button class="nav-link" aria-expanded="false">Shop</button>
           </li>
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
-          <li class="nav-search">
-            <form action="products.html" method="get" role="search" aria-label="Site search">
-              <input name="q" type="search" placeholder="Search…" />
-            </form>
-          </li>
-          <li>
-            <a class="cart-link" href="cart.html" aria-label="View cart">
-              <span class="icon">🛒</span><span class="cart-count" id="headerCartCount">0</span>
-            </a>
-          </li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li class="nav-account"><a href="account.html" id="accountLink">Sign In</a></li>
         </ul>
       </nav>
 
-      <button id="menuToggle" class="menu-toggle" aria-controls="mobileNav" aria-expanded="false">
-        <span class="visually-hidden">Toggle menu</span> ☰
-      </button>
-    </div>
+      <div class="nav-search"><input type="search" placeholder="Search…" /></div>
 
-    <nav id="mobileNav" class="mobile-nav" aria-label="Mobile">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li class="mobile-acc">
-          <button class="acc-btn" aria-expanded="false" aria-controls="mShop">Shop</button>
-          <div id="mShop" class="acc-panel">
-            <ul>
-              <li><a href="products.html#tees" class="js-close-nav">Tees</a></li>
-              <li><a href="products.html#hoodies" class="js-close-nav">Hoodies</a></li>
-              <li><a href="products.html#pants" class="js-close-nav">Pants</a></li>
-              <li><a href="products.html#footwear" class="js-close-nav">Footwear</a></li>
-              <li class="acc-sep"></li>
-              <li><a href="products.html?tag=new" class="js-close-nav">New</a></li>
-              <li><a href="products.html?tag=popular" class="js-close-nav">Popular</a></li>
-              <li><a href="products.html?tag=sale" class="js-close-nav">Sale</a></li>
-            </ul>
-          </div>
-        </li>
-        <li><a href="index.html#about" class="js-close-nav">About</a></li>
-        <li><a href="index.html#contact" class="js-close-nav">Contact</a></li>
-        <li><a href="cart.html" class="js-close-nav">Cart</a></li>
-      </ul>
-    </nav>
+      <a class="cart-link" href="cart.html" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 3h2l2.2 12.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 7H7" stroke="#fff"/></svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+    </div>
   </header>
 
-  <main id="main" class="section">
-    <div class="container product-layout">
-      <!-- LEFT: Gallery -->
-      <section class="gallery" aria-label="Product gallery">
+  <main id="main" class="container" style="padding-block:28px">
+    <!-- ====== PRODUCT LAYOUT ====== -->
+    <div class="product-layout" id="pdp">
+      <!-- Gallery -->
+      <section class="gallery">
         <div class="hero-img">
-          <img src="" alt="Product image">
+          <img id="heroImg" alt="Product image" />
         </div>
-        <div class="thumbs"></div>
+        <div class="thumbs" id="thumbs"></div>
       </section>
 
-      <!-- RIGHT: Info -->
+      <!-- Info -->
       <section class="product-info">
         <header>
-          <h1 data-p-title>Product</h1>
-          <p class="price" data-p-price>$0.00</p>
+          <h1 class="pdp-title" id="pdpTitle">Loading…</h1>
+          <p class="pdp-price" id="pdpPrice">$0.00</p>
         </header>
 
-        <div class="selectors">
-          <label for="selectColor">Color</label>
-          <select id="selectColor">
-            <option value="" selected>—</option>
-            <option value="black">Black</option>
-            <option value="grey">Grey</option>
-            <option value="white">White</option>
-          </select>
+        <form class="pdp-form" onsubmit="return false">
+          <fieldset>
+            <legend class="visually-hidden">Options</legend>
+            <div class="swatches" style="gap:10px; margin:.25rem 0 1rem">
+              <label class="chip">
+                <span>Color</span>
+                <select id="selColor"></select>
+              </label>
+              <label class="chip">
+                <span>Size</span>
+                <select id="selSize"></select>
+              </label>
+              <label class="chip">
+                <span>Qty</span>
+                <input id="selQty" type="number" min="1" value="1" />
+              </label>
+            </div>
+          </fieldset>
 
-          <label for="selectSize">Size</label>
-          <select id="selectSize">
-            <option value="" selected>—</option>
-            <option>XS</option><option>S</option><option>M</option>
-            <option>L</option><option>XL</option>
-          </select>
-
-          <label for="qtyInput">Qty</label>
-          <div class="qty-inline">
-            <input id="qtyInput" type="number" min="1" value="1" />
+          <div class="pdp-actions">
+            <button id="pdpAddBtn" type="button" class="btn btn-primary">Add to Cart</button>
+            <a href="products.html" class="btn btn-ghost">Continue Shopping</a>
           </div>
-        </div>
+        </form>
 
-        <div class="cta-row">
-          <button class="btn btn-primary add-to-cart">Add to Cart</button>
-          <a class="btn btn-ghost" href="products.html">Continue Shopping</a>
-        </div>
-
-        <details class="shipping">
+        <details class="pdp-details">
           <summary>Shipping & Returns</summary>
-          <p>Standard shipping worldwide. Free returns within 30 days.</p>
+          <p class="pdp-desc">Free 30-day returns. Standard shipping 3–5 business days.</p>
         </details>
       </section>
     </div>
   </main>
 
-  <footer class="site-footer" role="contentinfo">
+  <footer class="site-footer">
     <div class="container footer-grid">
-      <section aria-labelledby="footer-brand">
-        <h3 id="footer-brand" class="footer-title">EBELA STYLE</h3>
+      <section>
+        <h3 class="footer-title">EBELA STYLE</h3>
         <p class="footer-text">Minimal apparel and footwear for everyday life.</p>
       </section>
-      <nav aria-labelledby="footer-links">
-        <h3 id="footer-links" class="footer-title">Links</h3>
+      <nav aria-label="Links">
+        <h3 class="footer-title">Links</h3>
         <ul class="footer-list">
           <li><a href="products.html">Shop</a></li>
-          <li><a href="#">Shipping & Returns</a></li>
-          <li><a href="#">Terms & Privacy</a></li>
+          <li><a href="shipping.html">Shipping & Returns</a></li>
+          <li><a href="privacy.html">Terms & Privacy</a></li>
         </ul>
       </nav>
-      <nav aria-labelledby="footer-social">
-        <h3 id="footer-social" class="footer-title">Social</h3>
+      <nav aria-label="Social">
+        <h3 class="footer-title">Social</h3>
         <ul class="footer-list">
           <li><a href="#">Instagram</a></li>
           <li><a href="#">TikTok</a></li>
@@ -173,11 +112,11 @@
         </ul>
       </nav>
     </div>
-    <div class="container footer-bottom">
-      <small>© <span id="year"></span> EBELA STYLE. All rights reserved.</small>
-    </div>
+    <div class="container footer-bottom">© 2025 EBELA STYLE. All rights reserved.</div>
   </footer>
 
+  <!-- სქრიპტების სწორ რიგში ჩასმა მნიშვნელოვანია -->
+  <script src="data/products.js" defer></script>
   <script src="app.js" defer></script>
   <script src="product.js" defer></script>
 </body>

@@ -1,143 +1,79 @@
-/* ===== EBELA STYLE — Product page (gallery + lightbox) ===== */
+/* =========================
+   EBELA STYLE — Product page
+   ========================= */
+
 (function () {
-  const $  = (s, r=document)=>r.querySelector(s);
-  const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
+  const params = new URL(location.href).searchParams;
+  const sku = params.get('sku');
 
-  // read ?sku=
-  const params = new URLSearchParams(location.search);
-  const sku = params.get('sku') || 'tee01';
+  const DB = (window.PRODUCTS || []);
+  const product = DB.find(p => p.sku === sku);
 
-  // tiny product DB (დამატე სურვილისამებრ შენი SKU-ები)
-  const DB = {
-    tee01: {
-      name: 'Golden Graphic Tee',
-      price: 29,
-      images: [
-        'assets/img/products/img/tee01-1.jpg',
-        'assets/img/products/img/tee01-2.jpg',
-        'assets/img/products/img/tee01-3.jpg',
-      ],
-    },
-    best2: { name:'Classic Hoodie', price:59, images:['assets/img/products/img/best2.jpg'] },
-    best3: { name:'Relaxed Pants',  price:49, images:['assets/img/products/img/best3.jpg'] },
-    best4: { name:'Minimal Sneakers', price:79, images:['assets/img/products/img/best4.jpg'] },
-    ewl01: { name:'EWL Golden Graphic', price:32, images:['assets/img/products/img/ewl-golden-goose-april-benshosan-04-05c87c8cd8ac4835a49585763e0ef57e.jpeg'] },
-  };
+  // ელემენტები
+  const $hero  = document.getElementById('heroImg');
+  const $thumbs= document.getElementById('thumbs');
+  const $title = document.getElementById('pdpTitle');
+  const $price = document.getElementById('pdpPrice');
+  const $selColor = document.getElementById('selColor');
+  const $selSize  = document.getElementById('selSize');
+  const $selQty   = document.getElementById('selQty');
+  const $addBtn   = document.getElementById('pdpAddBtn');
 
-  const P = DB[sku] || DB.tee01;
+  if (!product) {
+    // ვერ ვიპოვეთ SKU — მარტივი მესიჯი
+    if ($title) $title.textContent = 'Product not found';
+    if ($hero) $hero.alt = 'Not found';
+    return;
+  }
 
-  // Fill info
-  const t = $('[data-p-title]');  if (t) t.textContent = P.name;
-  const pr = $('[data-p-price]'); if (pr) pr.textContent = `$${P.price.toFixed(2)}`;
+  // შევსება
+  $title.textContent = product.title || product.name || 'Product';
+  const price = Number(product.price || 0);
+  $price.textContent = `$${price.toFixed(2)}`;
 
-  // Build gallery (hero + thumbs)
-  const heroWrap = $('.gallery .hero-img');
-  const heroImg  = heroWrap?.querySelector('img');
-  const thumbs   = $('.gallery .thumbs');
+  // მთავარი ფოტო
+  const imgs = product.images && product.images.length ? product.images : [product.image].filter(Boolean);
+  if ($hero) $hero.src = imgs[0] || '';
 
-  if (heroImg && P.images.length) heroImg.src = P.images[0];
-  if (thumbs) {
-    thumbs.innerHTML = '';
-    P.images.forEach((src, i) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'thumb' + (i === 0 ? ' is-active' : '');
-      b.innerHTML = `<img src="${src}" alt="${P.name} ${i+1}">`;
-      b.addEventListener('click', () => {
-        if (heroImg) heroImg.src = src;
-        thumbs.querySelectorAll('.thumb').forEach(x => x.classList.remove('is-active'));
-        b.classList.add('is-active');
-        currentIndex = i; // keep in sync with lightbox
+  // თამბების რენდერი
+  if ($thumbs) {
+    $thumbs.innerHTML = '';
+    imgs.forEach((src, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'thumb' + (idx === 0 ? ' is-active' : '');
+      btn.type = 'button';
+      btn.innerHTML = `<img src="${src}" alt="">`;
+      btn.addEventListener('click', () => {
+        if ($hero) $hero.src = src;
+        [...$thumbs.querySelectorAll('.thumb')].forEach(el => el.classList.remove('is-active'));
+        btn.classList.add('is-active');
       });
-      thumbs.appendChild(b);
+      $thumbs.appendChild(btn);
     });
   }
 
-  /* ---------- Lightbox (zoom on hero click) ---------- */
-  let currentIndex = 0;
-  function idxFromHero() {
-    const curSrc = heroImg?.getAttribute('src');
-    currentIndex = Math.max(0, P.images.findIndex(s => s === curSrc));
-  }
+  // Color options
+  const colors = product.colors && product.colors.length ? product.colors : ['black','white','grey'];
+  $selColor.innerHTML = colors.map(c => `<option value="${c}">${c[0].toUpperCase()+c.slice(1)}</option>`).join('');
 
-  function buildLightbox() {
-    let lb = $('#lightbox');
-    if (lb) return lb;
+  // Size options
+  const sizes = product.sizes && product.sizes.length ? product.sizes : ['S','M','L'];
+  $selSize.innerHTML = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
 
-    lb = document.createElement('div');
-    lb.id = 'lightbox';
-    lb.className = 'lightbox';
-    lb.hidden = true;
-    lb.innerHTML = `
-      <button class="lb-btn" data-lb-close aria-label="Close">✕</button>
-      <button class="lb-btn" data-lb-prev aria-label="Previous">‹</button>
-      <img class="lightbox__img" alt="">
-      <button class="lb-btn" data-lb-next aria-label="Next">›</button>
-    `;
-    document.body.appendChild(lb);
+  // Add to Cart
+  $addBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
 
-    // Close on overlay click (outside image)
-    lb.addEventListener('click', (e) => {
-      if (e.target === lb) closeLB();
+    const color = $selColor.value || '';
+    const size  = $selSize.value  || '';
+    const qty   = Math.max(1, parseInt($selQty.value || '1', 10));
+
+    window.__CART__.addToCartLine({
+      sku: product.sku,
+      name: product.title || product.name || 'Item',
+      price,
+      img: imgs[0] || '',
+      color, size, qty
     });
-    lb.querySelector('[data-lb-close]')?.addEventListener('click', closeLB);
-    lb.querySelector('[data-lb-prev]')?.addEventListener('click', () => navLB(-1));
-    lb.querySelector('[data-lb-next]')?.addEventListener('click', () => navLB(1));
-
-    document.addEventListener('keydown', (e) => {
-      if (lb.hidden) return;
-      if (e.key === 'Escape') closeLB();
-      if (e.key === 'ArrowLeft') navLB(-1);
-      if (e.key === 'ArrowRight') navLB(1);
-    });
-
-    return lb;
-  }
-
-  function openLB() {
-    const lb = buildLightbox();
-    idxFromHero();
-    updateLB();
-    lb.hidden = false;
-    document.documentElement.style.overflow = 'hidden'; // lock scroll
-  }
-  function closeLB() {
-    const lb = $('#lightbox');
-    if (!lb) return;
-    lb.hidden = true;
-    document.documentElement.style.overflow = '';
-  }
-  function navLB(step) {
-    currentIndex = (currentIndex + step + P.images.length) % P.images.length;
-    updateLB();
-  }
-  function updateLB() {
-    const lbImg = $('#lightbox .lightbox__img');
-    if (lbImg) lbImg.src = P.images[currentIndex];
-  }
-
-  heroWrap?.addEventListener('click', openLB);
-
-  /* ---------- Sync Add-to-Cart dataset with selections ---------- */
-  const addBtn   = document.querySelector('.add-to-cart');
-  const sizeSel  = document.getElementById('selectSize');
-  const colorSel = document.getElementById('selectColor');
-  const qtyInp   = document.getElementById('qtyInput');
-
-  function syncBtn() {
-    if (!addBtn) return;
-    addBtn.dataset.sku   = sku;
-    addBtn.dataset.name  = P.name;
-    addBtn.dataset.price = String(P.price);
-    addBtn.dataset.img   = P.images[0] || '';
-    addBtn.dataset.size  = sizeSel?.value || '';
-    addBtn.dataset.color = colorSel?.value || '';
-    addBtn.dataset.qty   = qtyInp?.value || '1';
-  }
-  ['change','input'].forEach(ev=>{
-    sizeSel  && sizeSel.addEventListener(ev, syncBtn);
-    colorSel && colorSel.addEventListener(ev, syncBtn);
-    qtyInp   && qtyInp.addEventListener(ev, syncBtn);
   });
-  document.addEventListener('DOMContentLoaded', syncBtn);
 })();

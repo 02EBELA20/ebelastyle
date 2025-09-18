@@ -4,13 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shop — EBELA STYLE</title>
-  <meta name="description" content="Browse tees, hoodies, pants and footwear. Filter by category, color, size and price." />
+  <meta name="description" content="Shop tees, hoodies, pants and footwear. Filter by category, color, size and price.">
   <link rel="stylesheet" href="style.css" />
+  <!-- Optional tiny favicon to avoid 404 -->
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23111'/><text x='16' y='48' font-size='40' font-family='Arial' fill='%23fff'>E</text></svg>">
 </head>
+
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ================== SITE HEADER (same as index) ================== -->
+  <!-- ===== HEADER (same as index) ===== -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="EBELA STYLE Home">
@@ -31,23 +35,25 @@
                 <section class="mega-col" aria-labelledby="cat-title">
                   <h3 id="cat-title" class="mega-title">Categories</h3>
                   <ul class="mega-list" role="none">
-                    <li role="none"><a role="menuitem" href="#tees">Tees</a></li>
-                    <li role="none"><a role="menuitem" href="#hoodies">Hoodies</a></li>
-                    <li role="none"><a role="menuitem" href="#pants">Pants</a></li>
-                    <li role="none"><a role="menuitem" href="#footwear">Footwear</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#tees">Tees</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#hoodies">Hoodies</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#pants">Pants</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#footwear">Footwear</a></li>
                   </ul>
                 </section>
+
                 <section class="mega-col" aria-labelledby="filter-title">
                   <h3 id="filter-title" class="mega-title">Quick filters</h3>
                   <ul class="mega-tags">
-                    <li><a href="?tag=new">New</a></li>
-                    <li><a href="?tag=popular">Popular</a></li>
-                    <li><a href="?tag=sale">Sale</a></li>
-                    <li><a href="?tag=unisex">Unisex</a></li>
+                    <li><a href="products.html?tag=new">New</a></li>
+                    <li><a href="products.html?tag=popular">Popular</a></li>
+                    <li><a href="products.html?tag=sale">Sale</a></li>
+                    <li><a href="products.html?tag=unisex">Unisex</a></li>
                   </ul>
                 </section>
+
                 <aside class="mega-promo">
-                  <a href="#hoodies" class="promo-card">
+                  <a href="products.html#hoodies" class="promo-card">
                     <img src="assets/img/products/img/best2.jpg" alt="Soft hoodie — shop now">
                     <span class="promo-text">Soft Hoodies →</span>
                   </a>
@@ -81,114 +87,111 @@
     <nav id="mobileNav" class="mobile-nav" aria-label="Mobile">
       <ul>
         <li><a href="index.html">Home</a></li>
-
         <li class="mobile-acc">
           <button class="acc-btn" aria-expanded="false" aria-controls="mShop">Shop</button>
           <div id="mShop" class="acc-panel">
             <ul>
-              <li><a href="#tees" class="js-close-nav">Tees</a></li>
-              <li><a href="#hoodies" class="js-close-nav">Hoodies</a></li>
-              <li><a href="#pants" class="js-close-nav">Pants</a></li>
-              <li><a href="#footwear" class="js-close-nav">Footwear</a></li>
+              <li><a href="products.html#tees" class="js-close-nav">Tees</a></li>
+              <li><a href="products.html#hoodies" class="js-close-nav">Hoodies</a></li>
+              <li><a href="products.html#pants" class="js-close-nav">Pants</a></li>
+              <li><a href="products.html#footwear" class="js-close-nav">Footwear</a></li>
               <li class="acc-sep"></li>
-              <li><a href="?tag=new" class="js-close-nav">New</a></li>
-              <li><a href="?tag=popular" class="js-close-nav">Popular</a></li>
-              <li><a href="?tag=sale" class="js-close-nav">Sale</a></li>
+              <li><a href="products.html?tag=new" class="js-close-nav">New</a></li>
+              <li><a href="products.html?tag=popular" class="js-close-nav">Popular</a></li>
+              <li><a href="products.html?tag=sale" class="js-close-nav">Sale</a></li>
             </ul>
           </div>
         </li>
-
         <li><a href="index.html#about" class="js-close-nav">About</a></li>
         <li><a href="index.html#contact" class="js-close-nav">Contact</a></li>
         <li><a href="cart.html" class="js-close-nav">Cart</a></li>
       </ul>
     </nav>
   </header>
-  <!-- ================== /HEADER ================== -->
 
-  <main id="main">
-    <section class="section">
-      <div class="container">
-        <header class="section-header">
-          <h1 style="margin:0">Shop All</h1>
-          <p class="section-subtitle">Filter by category, color, size and price.</p>
-        </header>
-      </div>
-    </section>
+  <!-- ===== MAIN ===== -->
+  <main id="main" class="container" style="padding-top:2rem;">
 
-    <section class="section">
-      <div class="container shop-layout">
-        <aside class="filters" aria-label="Filters">
-          <form id="filtersForm">
-            <fieldset>
-              <legend>Category</legend>
-              <div class="chips">
-                <label><input type="radio" name="category" value="" checked> All</label>
-                <label><input type="radio" name="category" value="tees"> Tees</label>
-                <label><input type="radio" name="category" value="hoodies"> Hoodies</label>
-                <label><input type="radio" name="category" value="pants"> Pants</label>
-                <label><input type="radio" name="category" value="footwear"> Footwear</label>
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>Color</legend>
-              <div class="chips">
-                <label><input type="checkbox" name="color" value="black"> Black</label>
-                <label><input type="checkbox" name="color" value="white"> White</label>
-                <label><input type="checkbox" name="color" value="grey"> Grey</label>
-                <label><input type="checkbox" name="color" value="red"> Red</label>
-                <label><input type="checkbox" name="color" value="gold"> Gold</label>
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>Size</legend>
-              <div class="chips">
-                <label><input type="checkbox" name="size" value="S"> S</label>
-                <label><input type="checkbox" name="size" value="M"> M</label>
-                <label><input type="checkbox" name="size" value="L"> L</label>
-                <label><input type="checkbox" name="size" value="XL"> XL</label>
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>Price</legend>
-              <div class="price-row">
-                <input type="number" inputmode="numeric" placeholder="Min" name="min" min="0" />
-                <span>—</span>
-                <input type="number" inputmode="numeric" placeholder="Max" name="max" min="0" />
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>Sort</legend>
-              <select name="sort" aria-label="Sort products">
-                <option value="relevance">Relevance</option>
-                <option value="price-asc">Price: Low → High</option>
-                <option value="price-desc">Price: High → Low</option>
-                <option value="newest">Newest</option>
-                <option value="popular">Most Popular</option>
-              </select>
-            </fieldset>
-
-            <div class="filter-actions">
-              <button type="button" id="clearFilters" class="btn btn-sm">Clear</button>
-              <button type="submit" class="btn btn-primary btn-sm">Apply</button>
-            </div>
-          </form>
-        </aside>
-
-        <div class="shop-content">
-          <div id="tees"></div><div id="hoodies"></div><div id="pants"></div><div id="footwear"></div>
-          <ul id="productsGrid" class="product-grid" role="list" aria-live="polite"></ul>
-          <div id="emptyState" class="empty" hidden><p>No products match your filters.</p></div>
+    <div class="shop-layout">
+      <!-- Filters (sticky on desktop, drawer on mobile) -->
+      <aside class="filters" aria-labelledby="filtersTitle">
+        <div class="filters__head">
+          <h2 id="filtersTitle">Filters</h2>
+          <button id="clearFilters">Clear</button>
         </div>
-      </div>
-    </section>
+
+        <div class="group">
+          <span>Category</span>
+          <select id="fCategory">
+            <option value="">All</option>
+            <option value="tees">Tees</option>
+            <option value="hoodies">Hoodies</option>
+            <option value="pants">Pants</option>
+            <option value="footwear">Footwear</option>
+          </select>
+        </div>
+
+        <div class="group">
+          <span>Color</span>
+          <select id="fColor">
+            <option value="">All</option>
+            <!-- JS will append real colors -->
+          </select>
+        </div>
+
+        <div class="group">
+          <span>Size</span>
+          <select id="fSize">
+            <option value="">All</option>
+            <!-- JS will append real sizes -->
+          </select>
+        </div>
+
+        <div class="group two">
+          <div>
+            <span>Min price</span>
+            <input id="fMin" type="number" min="0" inputmode="numeric" />
+          </div>
+          <div>
+            <span>Max price</span>
+            <input id="fMax" type="number" min="0" inputmode="numeric" />
+          </div>
+        </div>
+
+        <div class="group">
+          <span>Search</span>
+          <input id="fSearch" type="search" placeholder="type to search…">
+        </div>
+
+        <button id="filtersClose" class="btn btn-ghost filters__close">Close</button>
+      </aside>
+
+      <!-- Results -->
+      <section class="results" aria-label="Product results">
+        <div class="results__bar">
+          <button id="filtersOpen" class="btn btn-ghost show-on-mobile">Filters</button>
+          <div class="bar-right">
+            <div id="countLine">Loading…</div>
+            <label class="visually-hidden" for="sortBy">Sort</label>
+            <select id="sortBy" aria-label="Sort products">
+              <option value="pop">Sort: Popular</option>
+              <option value="price-asc">Price: Low → High</option>
+              <option value="price-desc">Price: High → Low</option>
+              <option value="name-asc">Name: A → Z</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Active filter chips -->
+        <div id="activeChips" class="chips" aria-live="polite" aria-atomic="true"></div>
+
+        <!-- Product grid -->
+        <ul id="grid" class="product-grid" role="list" style="margin-top:1rem;"></ul>
+      </section>
+    </div>
   </main>
 
-  <!-- ================== FOOTER (same as index) ================== -->
+  <!-- ===== FOOTER (same style as index) ===== -->
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-grid">
       <section aria-labelledby="footer-brand">
@@ -218,11 +221,10 @@
       <small>© <span id="year"></span> EBELA STYLE. All rights reserved.</small>
     </div>
   </footer>
-  <!-- ================== /FOOTER ================== -->
 
-  <!-- Order matters -->
+  <!-- ===== SCRIPTS (order matters) ===== -->
+  <script src="data/products.js" defer></script>
   <script src="app.js" defer></script>
-  <script src="data.js" defer></script>
   <script src="products.js" defer></script>
 </body>
 </html>
