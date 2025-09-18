@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Checkout — EBELA STYLE</title>
-  <meta name="description" content="Secure checkout for EBELA STYLE. Enter shipping details and place your order." />
+  <title>Account — EBELA STYLE</title>
+  <meta name="description" content="Sign in, create an account, edit profile and view your orders." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ===== HEADER ===== -->
+  <!-- ================== HEADER ================== -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="EBELA STYLE Home">
-        <span class="brand-mark">E</span>
+        <span class="brand-mark" aria-hidden="true">E</span>
         <span class="brand-text">BELA STYLE</span>
       </a>
 
@@ -30,11 +30,11 @@
               <div class="mega-inner">
                 <section class="mega-col" aria-labelledby="cat-title">
                   <h3 id="cat-title" class="mega-title">Categories</h3>
-                  <ul class="mega-list">
-                    <li><a href="products.html#tees">Tees</a></li>
-                    <li><a href="products.html#hoodies">Hoodies</a></li>
-                    <li><a href="products.html#pants">Pants</a></li>
-                    <li><a href="products.html#footwear">Footwear</a></li>
+                  <ul class="mega-list" role="none">
+                    <li role="none"><a role="menuitem" href="products.html#tees">Tees</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#hoodies">Hoodies</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#pants">Pants</a></li>
+                    <li role="none"><a role="menuitem" href="products.html#footwear">Footwear</a></li>
                   </ul>
                 </section>
 
@@ -62,7 +62,7 @@
           <li><a href="index.html#contact">Contact</a></li>
 
           <li class="nav-search">
-            <form action="products.html" role="search">
+            <form action="products.html" method="get" role="search" aria-label="Site search">
               <input name="q" type="search" placeholder="Search…" />
             </form>
           </li>
@@ -83,6 +83,7 @@
     <nav id="mobileNav" class="mobile-nav" aria-label="Mobile">
       <ul>
         <li><a href="index.html">Home</a></li>
+
         <li class="mobile-acc">
           <button class="acc-btn" aria-expanded="false" aria-controls="mShop">Shop</button>
           <div id="mShop" class="acc-panel">
@@ -98,110 +99,153 @@
             </ul>
           </div>
         </li>
+
         <li><a href="index.html#about" class="js-close-nav">About</a></li>
         <li><a href="index.html#contact" class="js-close-nav">Contact</a></li>
         <li><a href="cart.html" class="js-close-nav">Cart</a></li>
       </ul>
     </nav>
   </header>
+  <!-- ================== /HEADER ================== -->
 
   <main id="main" class="section">
     <div class="container">
       <header class="section-header">
-        <h1 style="margin:0;">Checkout</h1>
-        <p class="section-subtitle">Enter your shipping details and place your order.</p>
+        <h1 style="margin:0">My Account</h1>
+        <p class="section-subtitle">Sign in or create an account. View and manage your profile & orders.</p>
       </header>
 
-      <div class="checkout-layout">
-        <!-- Left: Form -->
-        <div class="form-card">
-          <form id="checkoutForm" class="form-grid" novalidate>
-            <div class="field">
-              <label for="firstName">First name</label>
-              <input id="firstName" name="firstName" required />
-              <small class="err"></small>
-            </div>
-            <div class="field">
-              <label for="lastName">Last name</label>
-              <input id="lastName" name="lastName" required />
+      <!-- NOT LOGGED IN -->
+      <div id="authViews" class="account-auth" hidden>
+        <div class="form-card" style="margin-bottom:16px;">
+          <h2 style="margin-top:0;">Sign In</h2>
+          <form id="signinForm" class="form-grid" novalidate>
+            <div class="field wide">
+              <label for="siEmail">Email</label>
+              <input id="siEmail" name="email" type="email" required />
               <small class="err"></small>
             </div>
             <div class="field wide">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" required />
+              <label for="siPass">Password</label>
+              <input id="siPass" name="password" type="password" required />
               <small class="err"></small>
             </div>
-            <div class="field">
-              <label for="phone">Phone</label>
-              <input id="phone" name="phone"/>
-            </div>
-            <div class="field wide">
-              <label for="address">Address</label>
-              <input id="address" name="address" required />
-              <small class="err"></small>
-            </div>
-            <div class="field">
-              <label for="city">City</label>
-              <input id="city" name="city" required />
-              <small class="err"></small>
-            </div>
-            <div class="field">
-              <label for="state">State</label>
-              <input id="state" name="state" />
-            </div>
-            <div class="field">
-              <label for="zip">ZIP</label>
-              <input id="zip" name="zip" />
-            </div>
-            <div class="field">
-              <label for="country">Country</label>
-              <input id="country" name="country" value="United States" required />
-              <small class="err"></small>
-            </div>
-
-            <fieldset class="field-set wide">
-              <legend>Shipping method</legend>
-              <div class="radio-row">
-                <input type="radio" id="shipStd" name="ship" value="standard" checked>
-                <label for="shipStd">Standard (3–7 days)</label>
-              </div>
-              <div class="radio-row">
-                <input type="radio" id="shipExp" name="ship" value="express">
-                <label for="shipExp">Express (1–2 days)</label>
-              </div>
-            </fieldset>
-
-            <div class="field wide">
-              <label for="coupon">Coupon</label>
-              <input id="coupon" name="coupon" placeholder="WELCOME10, SAVE15, FREESHIP">
-              <small class="err" id="couponErr"></small>
-            </div>
-
             <div class="form-actions">
-              <button class="btn btn-primary" type="submit">Place Order</button>
-              <a class="btn btn-outline" href="cart.html">Back to Cart</a>
+              <button class="btn btn-primary" type="submit">Sign In</button>
             </div>
           </form>
-          <p class="muted" style="margin-top:8px;">Demo checkout — card payment is not processed here.</p>
         </div>
 
-        <!-- Right: Summary -->
-        <aside class="cart-summary">
-          <h3 style="margin:0;">Summary</h3>
-          <div id="summaryItems" class="cart-list" style="margin-top:8px;"></div>
+        <div class="form-card">
+          <h2 style="margin-top:0;">Create Account</h2>
+          <form id="signupForm" class="form-grid" novalidate>
+            <div class="field">
+              <label for="suFirst">First name</label>
+              <input id="suFirst" name="firstName" required />
+              <small class="err"></small>
+            </div>
+            <div class="field">
+              <label for="suLast">Last name</label>
+              <input id="suLast" name="lastName" required />
+              <small class="err"></small>
+            </div>
+            <div class="field wide">
+              <label for="suEmail">Email</label>
+              <input id="suEmail" name="email" type="email" required />
+              <small class="err"></small>
+            </div>
+            <div class="field">
+              <label for="suPass">Password</label>
+              <input id="suPass" name="password" type="password" minlength="4" required />
+              <small class="err"></small>
+            </div>
+            <div class="field">
+              <label for="suPass2">Confirm password</label>
+              <input id="suPass2" name="password2" type="password" minlength="4" required />
+              <small class="err"></small>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Create Account</button>
+            </div>
+          </form>
+          <p class="muted" style="margin-top:8px;">Demo only — passwords are stored locally (not secure).</p>
+        </div>
+      </div>
 
-          <div class="totals">
-            <div><span>Subtotal</span><span id="tSubtotal">$0.00</span></div>
-            <div><span>Discount</span><span id="tDiscount">-$0.00</span></div>
-            <div><span>Shipping</span><span id="tShipping">$0.00</span></div>
-            <div class="grand"><span>Total</span><span id="tTotal">$0.00</span></div>
+      <!-- LOGGED IN -->
+      <div id="accountView" class="form-card" hidden>
+        <div class="account-top">
+          <div class="avatar" id="accAvatar" aria-hidden="true">U</div>
+          <div>
+            <h2 style="margin:0;">Welcome, <span id="accName"></span>!</h2>
+            <p id="accEmail" class="muted" style="margin:2px 0 8px;"></p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <a class="btn btn-outline" href="products.html">Shop More</a>
+              <button id="logoutBtn" class="btn btn-ghost">Log out</button>
+            </div>
           </div>
-        </aside>
+        </div>
+
+        <hr style="border-color:var(--outline); margin:16px 0;">
+
+        <!-- Profile editor -->
+        <details class="pdp-details" open>
+          <summary><strong>Profile</strong> — shipping/contact info</summary>
+          <form id="profileForm" class="form-grid" style="margin-top:10px;">
+            <div class="field">
+              <label for="pfFirst">First name</label>
+              <input id="pfFirst" name="firstName" required />
+              <small class="err"></small>
+            </div>
+            <div class="field">
+              <label for="pfLast">Last name</label>
+              <input id="pfLast" name="lastName" required />
+              <small class="err"></small>
+            </div>
+            <div class="field wide">
+              <label for="pfEmail">Email</label>
+              <input id="pfEmail" name="email" type="email" required />
+              <small class="err"></small>
+            </div>
+            <div class="field">
+              <label for="pfPhone">Phone</label>
+              <input id="pfPhone" name="phone" />
+            </div>
+            <div class="field wide">
+              <label for="pfAddress">Address</label>
+              <input id="pfAddress" name="address" />
+            </div>
+            <div class="field">
+              <label for="pfCity">City</label>
+              <input id="pfCity" name="city" />
+            </div>
+            <div class="field">
+              <label for="pfState">State</label>
+              <input id="pfState" name="state" />
+            </div>
+            <div class="field">
+              <label for="pfZip">ZIP</label>
+              <input id="pfZip" name="zip" />
+            </div>
+            <div class="field">
+              <label for="pfCountry">Country</label>
+              <input id="pfCountry" name="country" value="United States" />
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Save Profile</button>
+            </div>
+          </form>
+        </details>
+
+        <hr style="border-color:var(--outline); margin:16px 0;">
+
+        <h3>Your Orders</h3>
+        <div id="ordersWrap"></div>
       </div>
     </div>
   </main>
 
-  <!-- FOOTER -->
+  <!-- ================== FOOTER ================== -->
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-grid">
       <section aria-labelledby="footer-brand">
@@ -233,6 +277,6 @@
   </footer>
 
   <script src="app.js" defer></script>
-  <script src="checkout.js" defer></script>
+  <script src="account.js" defer></script>
 </body>
 </html>

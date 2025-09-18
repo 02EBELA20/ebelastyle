@@ -1,95 +1,73 @@
-/* ========= EBELA STYLE — Product Details (uses global CATALOG) ========= */
+/* ===== EBELA STYLE — Product page (scoped) ===== */
+(function () {
+  const $  = (s, r=document)=>r.querySelector(s);
 
-const $ = (s,root=document)=> root.querySelector(s);
-const $$ = (s,root=document)=> Array.from(root.querySelectorAll(s));
+  // read ?sku=
+  const params = new URLSearchParams(location.search);
+  const sku = params.get('sku') || 'tee01';
 
-const params = new URLSearchParams(location.search);
-const SKU = params.get('sku');
+  // small product map (დაამატე სურვილისამებრ)
+  const DB = {
+    tee01: {
+      name: 'Golden Graphic Tee',
+      price: 29,
+      images: [
+        'assets/img/products/img/tee01-1.jpg',
+        'assets/img/products/img/tee01-2.jpg',
+        'assets/img/products/img/tee01-3.jpg',
+      ],
+    },
+    best2: { name:'Classic Hoodie', price:59, images:['assets/img/products/img/best2.jpg'] },
+    best3: { name:'Relaxed Pants',  price:49, images:['assets/img/products/img/best3.jpg'] },
+    best4: { name:'Minimal Sneakers',price:79, images:['assets/img/products/img/best4.jpg'] },
+    ewl01: { name:'EWL Golden Graphic', price:32, images:['assets/img/products/img/ewl-golden-goose-april-benshosan-04-05c87c8cd8ac4835a49585763e0ef57e.jpeg'] },
+  };
 
-const product = CATALOG.find(p => p.sku === SKU) || CATALOG[0]; // fallback
-document.getElementById('year').textContent = new Date().getFullYear();
+  const P = DB[sku] || DB.tee01;
 
-function render(){
-  if (!product){ document.body.innerHTML = "<p style='padding:24px'>Product not found.</p>"; return; }
+  // Fill title/price
+  const t = $('[data-p-title]');  if (t) t.textContent = P.name;
+  const pr = $('[data-p-price]'); if (pr) pr.textContent = `$${P.price.toFixed(2)}`;
 
-  // Title, price, desc
-  $('#pdpName').textContent = product.name;
-  $('#pdpPrice').textContent = `$${product.price.toFixed(2)}`;
-  $('#pdpDesc').textContent = product.desc;
-
-  // Images
-  const hero = $('#pdpHero');
-  hero.src = product.images[0];
-  hero.alt = product.name;
-
-  const thumbs = $('#pdpThumbs');
-  thumbs.innerHTML = '';
-  product.images.forEach((src, i) => {
-    const li = document.createElement('li');
-    li.innerHTML = `<button class="thumb ${i===0?'is-active':''}" aria-label="View image ${i+1}">
-      <img src="${src}" alt="${product.name} - ${i+1}" /></button>`;
-    thumbs.appendChild(li);
-  });
-  thumbs.addEventListener('click', (e) => {
-    const btn = e.target.closest('.thumb'); if(!btn) return;
-    $$('.thumb', thumbs).forEach(b=> b.classList.remove('is-active'));
-    btn.classList.add('is-active');
-    hero.src = btn.querySelector('img').src;
-  });
-
-  // Colors
-  const colorsWrap = $('#pdpColors');
-  product.colors.forEach(c => {
-    const id = `color-${c}`;
-    colorsWrap.insertAdjacentHTML('beforeend', `
-      <label class="swatch" title="${c}">
-        <input type="radio" name="color" value="${c}" ${c===product.colors[0]?'checked':''}>
-        <span class="dot" data-color="${c}"></span> <span class="swatch-text">${c}</span>
-      </label>`);
-  });
-
-  // Sizes
-  const sizesWrap = $('#pdpSizes');
-  product.sizes.forEach(s => {
-    sizesWrap.insertAdjacentHTML('beforeend', `
-      <label class="chip"><input type="radio" name="size" value="${s}" ${s===product.sizes[0]?'checked':''}> ${s}</label>
-    `);
-  });
-
-  // Qty controls
-  const qtyInput = $('#qty');
-  $$('.qty-btn').forEach(b => {
-    b.addEventListener('click', () => {
-      const step = Number(b.dataset.step);
-      qtyInput.value = Math.max(1, Number(qtyInput.value || 1) + step);
+  // Build gallery
+  const heroImg = $('.gallery .hero-img img');
+  const thumbs  = $('.gallery .thumbs');
+  if (heroImg && P.images.length) heroImg.src = P.images[0];
+  if (thumbs) {
+    thumbs.innerHTML = '';
+    P.images.forEach((src, i) => {
+      const b = document.createElement('button');
+      b.className = 'thumb' + (i === 0 ? ' is-active' : '');
+      b.innerHTML = `<img src="${src}" alt="${P.name} ${i + 1}">`;
+      b.addEventListener('click', () => {
+        if (heroImg) heroImg.src = src;
+        thumbs.querySelectorAll('.thumb').forEach(x => x.classList.remove('is-active'));
+        b.classList.add('is-active');
+      });
+      thumbs.appendChild(b);
     });
+  }
+
+  // Sync Add-to-Cart dataset with selections
+  const addBtn   = document.querySelector('.add-to-cart');
+  const sizeSel  = document.getElementById('selectSize');
+  const colorSel = document.getElementById('selectColor');
+  const qtyInp   = document.getElementById('qtyInput');
+
+  function syncBtn() {
+    if (!addBtn) return;
+    addBtn.dataset.sku   = sku;
+    addBtn.dataset.name  = P.name;
+    addBtn.dataset.price = String(P.price);
+    addBtn.dataset.img   = P.images[0] || '';
+    addBtn.dataset.size  = sizeSel?.value || '';
+    addBtn.dataset.color = colorSel?.value || '';
+    addBtn.dataset.qty   = qtyInp?.value || '1';
+  }
+  ['change','input'].forEach(ev=>{
+    sizeSel  && sizeSel.addEventListener(ev, syncBtn);
+    colorSel && colorSel.addEventListener(ev, syncBtn);
+    qtyInp   && qtyInp.addEventListener(ev, syncBtn);
   });
-
-  // Add to cart
-  $('#pdpForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const color = fd.get('color');
-    const size  = fd.get('size');
-    const qty   = Math.max(1, Number(fd.get('qty') || 1));
-
-    const cart = getCart();
-    const key = `${product.sku}-${size}-${color}`;
-    const found = cart.find(i => (i.key === key) || (i.sku === product.sku && i.size === size && i.color === color));
-
-    if (found) found.qty += qty;
-    else cart.push({
-      key, sku: product.sku, name: product.name,
-      price: product.price, img: product.images[0],
-      size, color, qty
-    });
-
-    setCart(cart);
-
-    const btn = $('#addBtn');
-    btn.textContent = 'Added ✓';
-    setTimeout(()=> btn.textContent = 'Add to Cart', 1000);
-  });
-}
-
-render();
+  document.addEventListener('DOMContentLoaded', syncBtn);
+})();

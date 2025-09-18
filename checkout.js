@@ -1,123 +1,194 @@
-/* ===== EBELA STYLE — Checkout (localStorage based) ===== */
+/* ===== EBELA STYLE — Checkout (LocalStorage) ===== */
 
-const list = document.getElementById('coList');
-const subEl = document.getElementById('coSub');
-const shipEl = document.getElementById('coShip');
-const totalEl = document.getElementById('coTotal');
-const form = document.getElementById('checkoutForm');
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = $('#year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-function fmt(n){ return `$${n.toFixed(2)}`; }
-function shippingCost(method){ return method === 'express' ? 15 : 5; }
+function getCart(){ try { return JSON.parse(localStorage.getItem('cart')||'[]'); } catch { return []; } }
+function setCart(c){ localStorage.setItem('cart', JSON.stringify(c||[])); }
+function getUser(){ try { return JSON.parse(localStorage.getItem('user')||'null'); } catch { return null; } }
+function setOrders(arr){ localStorage.setItem('orders', JSON.stringify(arr)); }
+function getOrders(){ try { return JSON.parse(localStorage.getItem('orders')||'[]'); } catch { return []; } }
+function money(n){ return `$${(n||0).toFixed(2)}`; }
 
-function renderSummary(){
-  const cart = getCart();
-  if (!cart.length){
-    // if empty, push back to products
-    location.href = 'products.html';
+function updateHeaderCount(){
+  const n = getCart().reduce((s,i)=> s+(i.qty||1), 0);
+  const el = $('#headerCartCount'); if (el) el.textContent = String(n);
+}
+
+function renderItems(){
+  const items = getCart();
+  const wrap = $('#summaryItems');
+  wrap.innerHTML = '';
+
+  if (!items.length){
+    wrap.innerHTML = `<div class="cart-empty"><p>No items in cart.</p><a class="btn btn-primary btn-sm" href="products.html">Start shopping</a></div>`;
     return;
   }
-
-  list.innerHTML = '';
-  let subtotal = 0;
-  cart.forEach(it => {
-    const line = it.price * (it.qty || 1);
-    subtotal += line;
-    const li = document.createElement('li');
+  items.forEach(it=>{
+    const li = document.createElement('div');
     li.className = 'cart-item';
     li.innerHTML = `
       <img class="ci-img" src="${it.img}" alt="${it.name}">
       <div class="ci-info">
-        <h3 class="ci-title">${it.name}</h3>
-        ${it.size || it.color ? `<p class="ci-meta">${it.size ? 'Size: '+it.size : ''} ${it.color ? 'Color: '+it.color : ''}</p>`: ''}
-        <p class="ci-price">${fmt(it.price)} × ${it.qty || 1}</p>
+        <h4 class="ci-title" style="margin:0;">${it.name}</h4>
+        ${it.size || it.color ? `<p class="ci-meta">${it.size? 'Size: '+it.size:''} ${it.color? 'Color: '+it.color:''}</p>`:''}
+        <p class="ci-price">${money(it.price)} × ${it.qty||1}</p>
       </div>
-      <div class="ci-line">${fmt(line)}</div>
+      <div class="ci-line">${money(it.price*(it.qty||1))}</div>
     `;
-    list.appendChild(li);
+    wrap.appendChild(li);
   });
-
-  const shipMethod = (new FormData(form).get('shipping')) || 'standard';
-  const ship = shippingCost(shipMethod);
-  const total = subtotal + ship;
-
-  subEl.textContent = fmt(subtotal);
-  shipEl.textContent = fmt(ship);
-  totalEl.textContent = fmt(total);
 }
 
-form.addEventListener('change', (e) => {
-  if (e.target.name === 'shipping') renderSummary();
-});
+/* ----- totals / coupons / shipping ----- */
+const state = {
+  subtotal: 0,
+  discount: 0,
+  shipping: 0,
+  coupon: ''
+};
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+function calcSubtotal(){
+  return getCart().reduce((s,i)=> s + (i.price * (i.qty||1)), 0);
+}
 
-  // Simple validation
-  const fd = new FormData(form);
-  const required = ['firstName','lastName','email','address','city','zip'];
-  let valid = true;
+function calcShipping(country, method){
+  const base = (country && country.toLowerCase() !== 'united states') ? 15 : 8;
+  const extra = (method === 'express') ? 7 : 0; // express adds +7
+  return base + extra;
+}
 
-  required.forEach(name => {
-    const el = form.querySelector(`[name="${name}"]`);
-    const err = el.parentElement.querySelector('.err');
-    if (!String(fd.get(name) || '').trim()){
-      valid = false;
-      if (err) err.textContent = 'Required';
-      el.classList.add('field-error');
-    } else {
-      if (err) err.textContent = '';
-      el.classList.remove('field-error');
+function applyCoupon(code, subtotal, shipping){
+  const c = (code||'').trim().toUpperCase();
+  if (!c) return {discount: 0, shipping};
+
+  // rules
+  if (c === 'WELCOME10'){
+    return {discount: +(subtotal * 0.10).toFixed(2), shipping};
+  }
+  if (c === 'SAVE15' && subtotal >= 100){
+    return {discount: +(subtotal * 0.15).toFixed(2), shipping};
+  }
+  if (c === 'FREESHIP'){
+    return {discount: 0, shipping: 0};
+  }
+  return {invalid: true, discount: 0, shipping};
+}
+
+function recompute(){
+  const items = getCart();
+  if (!items.length){ renderItems(); updateHeaderCount(); return; }
+
+  const country = $('#country').value;
+  const shipMethod = $('input[name="ship"]:checked').value;
+  const coupon = $('#coupon').value;
+
+  const subtotal = calcSubtotal();
+  let shipping = calcShipping(country, shipMethod);
+  let {discount, invalid, shipping: shipAfter} = applyCoupon(coupon, subtotal, shipping);
+  if (typeof shipAfter === 'number') shipping = shipAfter;
+
+  // free shipping threshold
+  if (subtotal >= 120 && coupon.toUpperCase() !== 'FREESHIP') shipping = 0;
+
+  state.subtotal = subtotal;
+  state.discount = discount;
+  state.shipping = shipping;
+  state.coupon = coupon;
+
+  // UI
+  $('#tSubtotal').textContent = money(subtotal);
+  $('#tDiscount').textContent = `-${money(discount).replace('$','')}`;
+  $('#tShipping').textContent = money(shipping);
+  const total = Math.max(0, subtotal - discount + shipping);
+  $('#tTotal').textContent = money(total);
+
+  // show coupon error
+  const err = $('#couponErr');
+  err.textContent = invalid ? 'Invalid coupon. Try WELCOME10, SAVE15 (≥ $100) or FREESHIP.' : '';
+}
+
+function prefillFromUser(){
+  const u = getUser(); if (!u) return;
+  const fields = ['firstName','lastName','email','phone','address','city','state','zip','country'];
+  fields.forEach(k=>{
+    const el = document.getElementById(k);
+    if (el && !el.value) el.value = u[k] || (k==='country' ? 'United States' : '');
+  });
+}
+
+function validate(form){
+  let ok = true;
+  form.querySelectorAll('.err').forEach(e => e.textContent = '');
+  const must = ['firstName','lastName','email','address','city','country'];
+  must.forEach(id=>{
+    const el = document.getElementById(id);
+    if (!el || !String(el.value).trim()){
+      ok = false;
+      const err = el.nextElementSibling; if (err) err.textContent = 'Required';
     }
   });
+  const email = $('#email').value.trim();
+  if (!/^\S+@\S+\.\S+$/.test(email)){ ok=false; $('#email').nextElementSibling.textContent='Invalid email'; }
+  return ok;
+}
 
-  // email format
-  const em = fd.get('email');
-  if (em && !/^\S+@\S+\.\S+$/.test(em)){
-    valid = false;
-    const el = form.querySelector('#email');
-    const err = el.parentElement.querySelector('.err');
-    if (err) err.textContent = 'Invalid email';
-    el.classList.add('field-error');
-  }
-
-  if (!valid) return;
-
+/* ----- place order ----- */
+$('#checkoutForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
   const cart = getCart();
-  let subtotal = cart.reduce((s,i)=> s + i.price * (i.qty || 1), 0);
-  const shipMethod = fd.get('shipping') || 'standard';
-  const ship = shippingCost(shipMethod);
-  const total = subtotal + ship;
+  if (!cart.length){ location.href='cart.html'; return; }
+  if (!validate(e.target)) return;
 
-  // Create order
+  const fd = new FormData(e.target);
+  const customer = {};
+  ['firstName','lastName','email','phone','address','city','state','zip','country'].forEach(k=>{
+    customer[k] = String(fd.get(k)||'').trim();
+  });
+  // persist into user profile if logged in
+  try {
+    const u = JSON.parse(localStorage.getItem('user')||'null');
+    if (u && u.loggedIn){
+      Object.assign(u, customer);
+      localStorage.setItem('user', JSON.stringify(u));
+    }
+  } catch {}
+
+  recompute(); // ensure state is fresh
+  const total = Math.max(0, state.subtotal - state.discount + state.shipping);
+
   const order = {
-    id: 'EB' + Date.now(),
+    id: 'E' + Date.now(),
     createdAt: new Date().toISOString(),
-    items: cart,
-    subtotal, shipping: ship, shipMethod,
-    total,
-    customer: {
-      firstName: fd.get('firstName'),
-      lastName: fd.get('lastName'),
-      email: fd.get('email'),
-      phone: fd.get('phone') || '',
-      address: fd.get('address'),
-      city: fd.get('city'),
-      state: fd.get('state') || '',
-      zip: fd.get('zip'),
-      country: fd.get('country') || ''
-    },
-    payment: { method: fd.get('payment') || 'card' }
+    items: cart.map(i => ({...i})),
+    subtotal: +state.subtotal.toFixed(2),
+    discount: +state.discount.toFixed(2),
+    shipping: +state.shipping.toFixed(2),
+    total: +total.toFixed(2),
+    coupon: state.coupon || '',
+    customer
   };
 
-  const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+  const orders = getOrders();
   orders.push(order);
-  localStorage.setItem('orders', JSON.stringify(orders));
+  setOrders(orders);
 
-  setCart([]); // clear cart
-  location.href = `thankyou.html?order=${encodeURIComponent(order.id)}`;
+  // clear cart and go to thank you
+  setCart([]);
+  updateHeaderCount();
+  location.href = `thankyou.html?order=${order.id}`;
 });
 
-// initial
-renderSummary();
+/* ----- init ----- */
+document.addEventListener('DOMContentLoaded', ()=>{
+  updateHeaderCount();
+  renderItems();
+  prefillFromUser();
+  recompute();
+
+  $('#country').addEventListener('input', recompute);
+  $$('input[name="ship"]').forEach(r => r.addEventListener('change', recompute));
+  $('#coupon').addEventListener('input', ()=>{ $('#couponErr').textContent=''; });
+});

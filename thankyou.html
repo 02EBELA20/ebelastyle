@@ -3,79 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Thank You — EBELA STYLE</title>
-  <meta name="description" content="Order confirmation page." />
+  <title>Thank you — EBELA STYLE</title>
+  <meta name="description" content="Thank you for your order." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ================== HEADER (same as index) ================== -->
+  <!-- HEADER -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="EBELA STYLE Home">
-        <span class="brand-mark" aria-hidden="true">E</span>
-        <span class="brand-text">BELA STYLE</span>
+        <span class="brand-mark">E</span><span class="brand-text">BELA STYLE</span>
       </a>
 
       <nav class="main-nav" aria-label="Primary">
         <ul class="nav-list">
           <li><a href="index.html">Home</a></li>
-
           <li class="has-dropdown">
             <button class="nav-link" aria-haspopup="true" aria-expanded="false" aria-controls="megaShop">
               Shop <span class="chev" aria-hidden="true">▾</span>
             </button>
-            <div id="megaShop" class="mega" role="menu" aria-label="Shop categories">
+            <div id="megaShop" class="mega">
               <div class="mega-inner">
-                <section class="mega-col" aria-labelledby="cat-title">
-                  <h3 id="cat-title" class="mega-title">Categories</h3>
-                  <ul class="mega-list" role="none">
-                    <li role="none"><a role="menuitem" href="products.html#tees">Tees</a></li>
-                    <li role="none"><a role="menuitem" href="products.html#hoodies">Hoodies</a></li>
-                    <li role="none"><a role="menuitem" href="products.html#pants">Pants</a></li>
-                    <li role="none"><a role="menuitem" href="products.html#footwear">Footwear</a></li>
+                <section class="mega-col">
+                  <h3 class="mega-title">Categories</h3>
+                  <ul class="mega-list">
+                    <li><a href="products.html#tees">Tees</a></li>
+                    <li><a href="products.html#hoodies">Hoodies</a></li>
+                    <li><a href="products.html#pants">Pants</a></li>
+                    <li><a href="products.html#footwear">Footwear</a></li>
                   </ul>
                 </section>
-                <section class="mega-col" aria-labelledby="filter-title">
-                  <h3 id="filter-title" class="mega-title">Quick filters</h3>
+                <section class="mega-col">
+                  <h3 class="mega-title">Quick filters</h3>
                   <ul class="mega-tags">
                     <li><a href="products.html?tag=new">New</a></li>
                     <li><a href="products.html?tag=popular">Popular</a></li>
                     <li><a href="products.html?tag=sale">Sale</a></li>
-                    <li><a href="products.html?tag=unisex">Unisex</a></li>
                   </ul>
                 </section>
                 <aside class="mega-promo">
-                  <a href="products.html#hoodies" class="promo-card">
-                    <img src="assets/img/products/img/best2.jpg" alt="Soft hoodie — shop now">
-                    <span class="promo-text">Soft Hoodies →</span>
+                  <a href="products.html#tees" class="promo-card">
+                    <img src="assets/img/products/img/best1.webp" alt="Shop tees">
+                    <span class="promo-text">Premium Tees →</span>
                   </a>
                 </aside>
               </div>
             </div>
           </li>
-
           <li><a href="index.html#about">About</a></li>
           <li><a href="index.html#contact">Contact</a></li>
-
-          <li class="nav-search">
-            <form action="products.html" method="get" role="search" aria-label="Site search">
-              <input name="q" type="search" placeholder="Search…" />
-            </form>
-          </li>
-
-          <li>
-            <a class="cart-link" href="cart.html" aria-label="View cart">
-              <span class="icon" aria-hidden="true">🛒</span><span class="cart-count" id="headerCartCount">0</span>
-            </a>
-          </li>
+          <li class="nav-search"><form action="products.html"><input name="q" type="search" placeholder="Search…"></form></li>
+          <li><a class="cart-link" href="cart.html"><span class="icon">🛒</span><span class="cart-count" id="headerCartCount">0</span></a></li>
         </ul>
       </nav>
 
-      <button id="menuToggle" class="menu-toggle" aria-controls="mobileNav" aria-expanded="false">
-        <span class="visually-hidden">Toggle menu</span> ☰
-      </button>
+      <button id="menuToggle" class="menu-toggle" aria-controls="mobileNav" aria-expanded="false">☰</button>
     </div>
 
     <nav id="mobileNav" class="mobile-nav" aria-label="Mobile">
@@ -89,62 +73,36 @@
               <li><a href="products.html#hoodies" class="js-close-nav">Hoodies</a></li>
               <li><a href="products.html#pants" class="js-close-nav">Pants</a></li>
               <li><a href="products.html#footwear" class="js-close-nav">Footwear</a></li>
-              <li class="acc-sep"></li>
-              <li><a href="products.html?tag=new" class="js-close-nav">New</a></li>
-              <li><a href="products.html?tag=popular" class="js-close-nav">Popular</a></li>
-              <li><a href="products.html?tag=sale" class="js-close-nav">Sale</a></li>
             </ul>
           </div>
         </li>
-        <li><a href="index.html#about" class="js-close-nav">About</a></li>
-        <li><a href="index.html#contact" class="js-close-nav">Contact</a></li>
         <li><a href="cart.html" class="js-close-nav">Cart</a></li>
       </ul>
     </nav>
   </header>
-  <!-- ================== /HEADER ================== -->
 
-  <main id="main" class="section">
+  <main id="main" class="section thankyou">
     <div class="container">
-      <header class="section-header">
-        <h1 style="margin:0">Thank you!</h1>
-        <p class="section-subtitle">Your order has been placed successfully.</p>
-      </header>
+      <div class="form-card">
+        <h1 style="margin-top:0;">Thank you!</h1>
+        <p>Your order <strong id="ordId">#</strong> has been placed. A confirmation email will be sent shortly.</p>
 
-      <div class="thankyou">
-        <div class="form-card">
-          <h2 id="tyOrder">Order #</h2>
-          <p>We’ve sent a confirmation email with your order details.</p>
+        <div id="ordSummary" style="margin-top:12px;"></div>
 
-          <h3 style="margin-top:16px;">Shipping</h3>
-          <p id="tyShip"></p>
-
-          <h3 style="margin-top:16px;">Items</h3>
-          <ul id="tyItems" class="cart-list" role="list"></ul>
-
-          <dl class="totals" style="margin-top:8px;">
-            <div><dt>Subtotal</dt><dd id="tySub">$0.00</dd></div>
-            <div><dt>Shipping</dt><dd id="tyShipCost">$0.00</dd></div>
-            <div class="grand"><dt>Total</dt><dd id="tyTotal">$0.00</dd></div>
-          </dl>
-
-          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-            <a class="btn btn-primary" href="products.html">Continue Shopping</a>
-            <a class="btn btn-ghost" href="cart.html">View Cart</a>
-          </div>
+        <div class="form-actions" style="margin-top:16px;">
+          <a class="btn btn-primary" href="products.html">Continue Shopping</a>
+          <a class="btn btn-outline" href="account.html">View in Account</a>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- ================== FOOTER (same as index) ================== -->
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-grid">
       <section aria-labelledby="footer-brand">
         <h3 id="footer-brand" class="footer-title">EBELA STYLE</h3>
         <p class="footer-text">Minimal apparel and footwear for everyday life.</p>
       </section>
-
       <nav aria-labelledby="footer-links">
         <h3 id="footer-links" class="footer-title">Links</h3>
         <ul class="footer-list">
@@ -153,13 +111,12 @@
           <li><a href="#">Terms & Privacy</a></li>
         </ul>
       </nav>
-
       <nav aria-labelledby="footer-social">
         <h3 id="footer-social" class="footer-title">Social</h3>
         <ul class="footer-list">
-          <li><a href="#" aria-label="Instagram">Instagram</a></li>
-          <li><a href="#" aria-label="TikTok">TikTok</a></li>
-          <li><a href="#" aria-label="YouTube">YouTube</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">YouTube</a></li>
         </ul>
       </nav>
     </div>
@@ -169,6 +126,52 @@
   </footer>
 
   <script src="app.js" defer></script>
-  <script src="thankyou.js" defer></script>
+  <script>
+    // tiny inline to show order summary
+    const $ = (s, r=document)=>r.querySelector(s);
+    const yearEl = $('#year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    function getOrders(){ try { return JSON.parse(localStorage.getItem('orders')||'[]'); } catch { return []; } }
+    function money(n){ return `$${(n||0).toFixed(2)}`; }
+    function updateHeaderCount(){
+      const cart = JSON.parse(localStorage.getItem('cart')||'[]');
+      const n = cart.reduce((s,i)=> s+(i.qty||1),0);
+      const el = document.getElementById('headerCartCount'); if (el) el.textContent = String(n);
+    }
+    updateHeaderCount();
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('order');
+    const orders = getOrders();
+    const ord = id ? orders.find(o=>o.id===id) : orders[orders.length-1];
+    if (ord){
+      document.getElementById('ordId').textContent = ord.id;
+      const div = document.getElementById('ordSummary');
+      div.innerHTML = `
+        <div class="cart-summary">
+          <h3 style="margin:0;">Order summary</h3>
+          <ul class="cart-list" style="margin-top:8px;">
+            ${ord.items.map(i=>`
+              <li class="cart-item">
+                <img class="ci-img" src="${i.img}" alt="${i.name}">
+                <div class="ci-info">
+                  <h4 class="ci-title">${i.name}</h4>
+                  ${i.size||i.color?`<p class="ci-meta">${i.size?'Size: '+i.size:''} ${i.color?'Color: '+i.color:''}</p>`:''}
+                  <p class="ci-price">${money(i.price)} × ${i.qty||1}</p>
+                </div>
+                <div class="ci-line">${money(i.price*(i.qty||1))}</div>
+              </li>
+            `).join('')}
+          </ul>
+          <div class="totals">
+            <div><span>Subtotal</span><span>${money(ord.subtotal)}</span></div>
+            <div><span>Discount</span><span>-${money(ord.discount).replace('$','')}</span></div>
+            <div><span>Shipping</span><span>${money(ord.shipping)}</span></div>
+            <div class="grand"><span>Total</span><span>${money(ord.total)}</span></div>
+          </div>
+        </div>
+      `;
+    }
+  </script>
 </body>
 </html>

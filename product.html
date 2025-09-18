@@ -4,24 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Product — EBELA STYLE</title>
-  <meta name="description" content="Product details: images, description, size and color options." />
+  <meta name="description" content="Product details page." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ================== SITE HEADER (same as index) ================== -->
+  <!-- HEADER (same as other pages) -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="EBELA STYLE Home">
-        <span class="brand-mark" aria-hidden="true">E</span>
-        <span class="brand-text">BELA STYLE</span>
+        <span class="brand-mark">E</span><span class="brand-text">BELA STYLE</span>
       </a>
 
       <nav class="main-nav" aria-label="Primary">
         <ul class="nav-list">
           <li><a href="index.html">Home</a></li>
-
           <li class="has-dropdown">
             <button class="nav-link" aria-haspopup="true" aria-expanded="false" aria-controls="megaShop">
               Shop <span class="chev" aria-hidden="true">▾</span>
@@ -30,11 +28,11 @@
               <div class="mega-inner">
                 <section class="mega-col" aria-labelledby="cat-title">
                   <h3 id="cat-title" class="mega-title">Categories</h3>
-                  <ul class="mega-list" role="none">
-                    <li role="none"><a role="menuitem" href="products.html#tees">Tees</a></li>
-                    <li role="none"><a role="menuitem" href="products.html#hoodies">Hoodies</a></li>
-                    <li role="none"><a role="menuitem" href="products.html#pants">Pants</a></li>
-                    <li role="none"><a role="menuitem" href="products.html#footwear">Footwear</a></li>
+                  <ul class="mega-list">
+                    <li><a href="products.html#tees">Tees</a></li>
+                    <li><a href="products.html#hoodies">Hoodies</a></li>
+                    <li><a href="products.html#pants">Pants</a></li>
+                    <li><a href="products.html#footwear">Footwear</a></li>
                   </ul>
                 </section>
                 <section class="mega-col" aria-labelledby="filter-title">
@@ -55,19 +53,16 @@
               </div>
             </div>
           </li>
-
           <li><a href="index.html#about">About</a></li>
           <li><a href="index.html#contact">Contact</a></li>
-
           <li class="nav-search">
             <form action="products.html" method="get" role="search" aria-label="Site search">
               <input name="q" type="search" placeholder="Search…" />
             </form>
           </li>
-
           <li>
             <a class="cart-link" href="cart.html" aria-label="View cart">
-              <span class="icon" aria-hidden="true">🛒</span><span class="cart-count" id="headerCartCount">0</span>
+              <span class="icon">🛒</span><span class="cart-count" id="headerCartCount">0</span>
             </a>
           </li>
         </ul>
@@ -81,7 +76,6 @@
     <nav id="mobileNav" class="mobile-nav" aria-label="Mobile">
       <ul>
         <li><a href="index.html">Home</a></li>
-
         <li class="mobile-acc">
           <button class="acc-btn" aria-expanded="false" aria-controls="mShop">Shop</button>
           <div id="mShop" class="acc-panel">
@@ -97,71 +91,71 @@
             </ul>
           </div>
         </li>
-
         <li><a href="index.html#about" class="js-close-nav">About</a></li>
         <li><a href="index.html#contact" class="js-close-nav">Contact</a></li>
         <li><a href="cart.html" class="js-close-nav">Cart</a></li>
       </ul>
     </nav>
   </header>
-  <!-- ================== /HEADER ================== -->
 
   <main id="main" class="section">
-    <div class="container product-detail" aria-live="polite">
-      <section class="gallery" aria-label="Product images">
+    <div class="container product-layout">
+      <!-- LEFT: Gallery -->
+      <section class="gallery" aria-label="Product gallery">
         <div class="hero-img">
-          <img id="pdpHero" src="" alt="" />
+          <img src="" alt="Product image">
         </div>
-        <ul id="pdpThumbs" class="thumbs" role="list"></ul>
+        <div class="thumbs"></div>
       </section>
 
-      <section class="pdp-info">
-        <h1 id="pdpName" class="pdp-title"></h1>
-        <p id="pdpPrice" class="pdp-price"></p>
-        <p id="pdpDesc" class="pdp-desc"></p>
+      <!-- RIGHT: Info -->
+      <section class="product-info">
+        <header>
+          <h1 data-p-title>Product</h1>
+          <p class="price" data-p-price>$0.00</p>
+        </header>
 
-        <form id="pdpForm" class="pdp-form">
-          <fieldset>
-            <legend>Color</legend>
-            <div id="pdpColors" class="swatches"></div>
-          </fieldset>
+        <div class="selectors">
+          <label for="selectColor">Color</label>
+          <select id="selectColor">
+            <option value="" selected>—</option>
+            <option value="black">Black</option>
+            <option value="grey">Grey</option>
+            <option value="white">White</option>
+          </select>
 
-          <fieldset>
-            <legend>Size</legend>
-            <div id="pdpSizes" class="chips"></div>
-          </fieldset>
+          <label for="selectSize">Size</label>
+          <select id="selectSize">
+            <option value="" selected>—</option>
+            <option>XS</option><option>S</option><option>M</option>
+            <option>L</option><option>XL</option>
+          </select>
 
-          <div class="qty-row">
-            <label for="qty">Qty</label>
-            <div class="qty">
-              <button type="button" class="qty-btn" data-step="-1" aria-label="Decrease">−</button>
-              <input id="qty" name="qty" type="number" value="1" min="1" />
-              <button type="button" class="qty-btn" data-step="1" aria-label="Increase">+</button>
-            </div>
+          <label for="qtyInput">Qty</label>
+          <div class="qty-inline">
+            <input id="qtyInput" type="number" min="1" value="1" />
           </div>
+        </div>
 
-          <div class="pdp-actions">
-            <button id="addBtn" type="submit" class="btn btn-primary">Add to Cart</button>
-            <a class="btn btn-outline" href="products.html">Continue Shopping</a>
-          </div>
-        </form>
+        <div class="cta-row">
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+          <a class="btn btn-ghost" href="products.html">Continue Shopping</a>
+        </div>
 
-        <details class="pdp-details">
+        <details class="shipping">
           <summary>Shipping & Returns</summary>
-          <p>Fast shipping worldwide. Free returns within 14 days (unused items).</p>
+          <p>Standard shipping worldwide. Free returns within 30 days.</p>
         </details>
       </section>
     </div>
   </main>
 
-  <!-- ================== FOOTER (same as index) ================== -->
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-grid">
       <section aria-labelledby="footer-brand">
         <h3 id="footer-brand" class="footer-title">EBELA STYLE</h3>
         <p class="footer-text">Minimal apparel and footwear for everyday life.</p>
       </section>
-
       <nav aria-labelledby="footer-links">
         <h3 id="footer-links" class="footer-title">Links</h3>
         <ul class="footer-list">
@@ -170,13 +164,12 @@
           <li><a href="#">Terms & Privacy</a></li>
         </ul>
       </nav>
-
       <nav aria-labelledby="footer-social">
         <h3 id="footer-social" class="footer-title">Social</h3>
         <ul class="footer-list">
-          <li><a href="#" aria-label="Instagram">Instagram</a></li>
-          <li><a href="#" aria-label="TikTok">TikTok</a></li>
-          <li><a href="#" aria-label="YouTube">YouTube</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">YouTube</a></li>
         </ul>
       </nav>
     </div>
@@ -184,10 +177,8 @@
       <small>© <span id="year"></span> EBELA STYLE. All rights reserved.</small>
     </div>
   </footer>
-  <!-- ================== /FOOTER ================== -->
 
   <script src="app.js" defer></script>
-  <script src="data.js" defer></script>
   <script src="product.js" defer></script>
 </body>
 </html>

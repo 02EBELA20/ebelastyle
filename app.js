@@ -1,184 +1,146 @@
-/* ========== EBELA STYLE: Homepage JS ========== */
+/* ===== EBELA STYLE — Common app logic (scoped, robust) ===== */
+(function () {
+  /* ---------- storage helpers ---------- */
+  function readCart() {
+    try { return JSON.parse(localStorage.getItem('cart') || '[]'); }
+    catch { return []; }
+  }
+  function writeCart(arr) { localStorage.setItem('cart', JSON.stringify(arr || [])); }
+  function updateHeaderCount() {
+    const n = readCart().reduce((s, i) => s + (Number(i.qty) || 1), 0);
+    const el = document.getElementById('headerCartCount');
+    if (el) el.textContent = String(n);
+  }
+  function money(n){ return `$${(Number(n)||0).toFixed(2)}`; }
 
-/**
- * Helpers for cart in localStorage
- */
-const CART_KEY = 'ebela_cart';
-
-function getCart(){
-  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
-  catch { return []; }
-}
-function setCart(items){
-  localStorage.setItem(CART_KEY, JSON.stringify(items));
-  updateHeaderCount();
-}
-function updateHeaderCount(){
-  const countEl = document.getElementById('headerCartCount');
-  if (!countEl) return;
-  const items = getCart();
-  const totalQty = items.reduce((sum, it) => sum + (it.qty || 1), 0);
-  countEl.textContent = totalQty;
-}
-
-/**
- * 1) Mobile navigation toggle
- */
-const menuBtn = document.getElementById('menuToggle');
-const mobileNav = document.getElementById('mobileNav');
-
-if (menuBtn && mobileNav) {
-  menuBtn.addEventListener('click', () => {
-    const open = mobileNav.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded', String(open));
+  /* ---------- DOM ready ---------- */
+  document.addEventListener('DOMContentLoaded', () => {
+    const y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
+    updateHeaderCount();
   });
 
-  // Close drawer when link clicked (nice UX)
-  mobileNav.querySelectorAll('.js-close-nav').forEach(a =>
-    a.addEventListener('click', () => {
-      mobileNav.classList.remove('open');
-      menuBtn.setAttribute('aria-expanded', 'false');
-    })
-  );
-}
-
-/**
- * 2) Header elevation on scroll
- */
-const header = document.querySelector('.site-header');
-window.addEventListener('scroll', () => {
-  const elev = (window.scrollY || window.pageYOffset) > 8;
-  header.classList.toggle('elevated', elev);
-});
-
-/**
- * 3) Desktop mega-menu (Shop)
- */
-const shopItem = document.querySelector('.has-dropdown');
-if (shopItem) {
-  const trigger = shopItem.querySelector('.nav-link');
-  const panel = shopItem.querySelector('.mega');
-
-  const open = (v) => {
-    shopItem.classList.toggle('open', v);
-    trigger.setAttribute('aria-expanded', String(v));
-  };
-
-  // Toggle on button click
-  trigger.addEventListener('click', (e) => {
-    e.preventDefault();
-    open(!shopItem.classList.contains('open'));
-  });
-
-  // Close if click outside
+  /* ---------- mobile drawer ---------- */
   document.addEventListener('click', (e) => {
-    if (!shopItem.contains(e.target)) open(false);
+    const btn = e.target.closest('#menuToggle');
+    if (!btn) return;
+    const nav = document.getElementById('mobileNav');
+    const exp = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!exp));
+    nav.classList.toggle('is-open', !exp);
+  });
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('.js-close-nav');
+    if (!link) return;
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('menuToggle');
+    nav && nav.classList.remove('is-open');
+    btn && btn.setAttribute('aria-expanded', 'false');
   });
 
-  // Keyboard support
-  shopItem.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { open(false); trigger.focus(); }
-  });
-
-  // Optional: hover open for pointer devices
-  let hoverTimer;
-  shopItem.addEventListener('mouseenter', () => {
-    if (window.matchMedia('(hover: hover)').matches) {
-      clearTimeout(hoverTimer); open(true);
+  /* ---------- desktop mega dropdown (Shop) ---------- */
+  document.addEventListener('click', (e) => {
+    const toggle = e.target.closest('.has-dropdown > .nav-link');
+    if (toggle) {
+      const li = toggle.parentElement;
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      li.classList.toggle('is-open', !expanded);
+      return;
     }
-  });
-  shopItem.addEventListener('mouseleave', () => {
-    if (window.matchMedia('(hover: hover)').matches) {
-      hoverTimer = setTimeout(() => open(false), 120);
-    }
-  });
-}
-
-/**
- * 4) Mobile accordion inside drawer (Shop)
- */
-document.querySelectorAll('.mobile-acc .acc-btn').forEach(btn => {
-  const panelId = btn.getAttribute('aria-controls');
-  const li = btn.closest('.mobile-acc');
-  btn.addEventListener('click', () => {
-    const isOpen = li.classList.toggle('open');
-    btn.setAttribute('aria-expanded', String(isOpen));
-  });
-});
-
-/**
- * 5) Simple hero slider (no libraries)
- */
-(function slider(){
-  const slider = document.querySelector('[data-slider]');
-  if(!slider) return;
-
-  const slides = Array.from(slider.querySelectorAll('.slide'));
-  const prevBtn = slider.querySelector('[data-prev]');
-  const nextBtn = slider.querySelector('[data-next]');
-  const dotsWrap = slider.querySelector('[data-dots]');
-
-  let index = 0;
-
-  // Build dots
-  slides.forEach((_, i) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.setAttribute('role', 'tab');
-    b.setAttribute('aria-label', `Go to slide ${i+1}`);
-    b.addEventListener('click', () => go(i));
-    dotsWrap.appendChild(b);
-  });
-
-  function render(){
-    slides.forEach((s,i)=> s.classList.toggle('is-active', i===index));
-    dotsWrap.querySelectorAll('button').forEach((d,i)=>{
-      d.setAttribute('aria-selected', i===index ? 'true' : 'false');
+    // click outside -> close all
+    document.querySelectorAll('.has-dropdown.is-open .nav-link').forEach(btn => {
+      btn.setAttribute('aria-expanded', 'false');
+      btn.parentElement.classList.remove('is-open');
     });
-  }
-
-  function go(i){
-    index = (i + slides.length) % slides.length;
-    render();
-  }
-
-  prevBtn.addEventListener('click', ()=> go(index - 1));
-  nextBtn.addEventListener('click', ()=> go(index + 1));
-
-  // Auto-play every 6s (stop on first user interaction)
-  let auto = setInterval(()=> go(index + 1), 6000);
-  [prevBtn, nextBtn, dotsWrap].forEach(el => {
-    el.addEventListener('click', ()=> { if(auto){ clearInterval(auto); auto = null; } }, { once:true });
   });
 
-  render();
-})();
+  /* ---------- Add to Cart (works from ALL pages) ---------- */
 
-/**
- * 6) Add-to-cart buttons on homepage
- */
-document.querySelectorAll('.add-to-cart').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const sku = btn.dataset.sku;
-    const name = btn.dataset.name;
-    const price = Number(btn.dataset.price || 0);
-    const img = btn.dataset.img;
+  // parse price like "$29.00"
+  function parsePrice(txt) {
+    const n = Number(String(txt || '').replace(/[^\d.]/g, ''));
+    return isNaN(n) ? 0 : n;
+  }
 
-    const cart = getCart();
-    const found = cart.find(i => i.sku === sku);
-    if (found) {
-      found.qty += 1;
-    } else {
-      cart.push({ sku, name, price, img, qty: 1 });
+  // try to extract SKU from nearest link "product.html?sku=..."
+  function extractSKU(el) {
+    const link = el && el.querySelector('a[href*="product.html?"]');
+    if (!link) return '';
+    const u = new URL(link.getAttribute('href'), location.origin);
+    return u.searchParams.get('sku') || '';
+  }
+
+  // Build cart item from a button (very robust)
+  function makeCartItemFromButton(btn) {
+    // 1) primary data: data-* on the button
+    let sku   = btn.dataset.sku   || '';
+    let name  = btn.dataset.name  || '';
+    let price = btn.dataset.price ? Number(btn.dataset.price) : NaN;
+    let img   = btn.dataset.img   || '';
+    let size  = btn.dataset.size  || '';
+    let color = btn.dataset.color || '';
+    let qty   = btn.dataset.qty   ? parseInt(btn.dataset.qty, 10) : NaN;
+
+    // 2) fallback: read from the surrounding product card
+    const card = btn.closest('.product-card') || btn.closest('[data-card]');
+    if (card) {
+      if (!name)  name  = card.querySelector('.product-title')?.textContent?.trim() || name;
+      if (isNaN(price)) price = parsePrice(card.querySelector('.product-price')?.textContent);
+      if (!img)   img   = card.querySelector('img')?.getAttribute('src') || img;
+      if (!sku)   sku   = card.dataset.sku || extractSKU(card);
     }
-    setCart(cart);
 
-    // Simple feedback
-    btn.textContent = 'Added ✓';
-    setTimeout(() => (btn.textContent = 'Add to Cart'), 1200);
+    // 3) fallback: product page (gallery)
+    if (!img) {
+      const hero = document.querySelector('.gallery .hero-img img') ||
+                   document.querySelector('.product-media img');
+      if (hero) img = hero.getAttribute('src');
+    }
+    if (!name)  name  = document.querySelector('[data-p-title]')?.textContent?.trim() || name;
+    if (isNaN(price)) price = parsePrice(document.querySelector('[data-p-price]')?.textContent);
+
+    // 4) selections on product page
+    size  = size  || document.getElementById('selectSize')?.value  || '';
+    color = color || document.getElementById('selectColor')?.value || '';
+    if (isNaN(qty)) {
+      const q = document.getElementById('qtyInput');
+      qty = q ? Math.max(1, parseInt(q.value || '1', 10)) : 1;
+    }
+    if (!sku) sku = name ? `no-sku:${name}` : 'sku';
+
+    return {
+      sku, name,
+      price: Number(price) || 0,
+      img, size, color,
+      qty: Math.max(1, Number(qty) || 1),
+    };
+  }
+
+  // merge rule: sku+size+color
+  function keyFor(x){ return [x.sku, x.size || '', x.color || ''].join('|'); }
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.add-to-cart');
+    if (!btn) return;
+
+    try {
+      const item = makeCartItemFromButton(btn);
+      const cart = readCart();
+      const i = cart.findIndex(x => keyFor(x) === keyFor(item));
+      if (i > -1) cart[i].qty += item.qty; else cart.push(item);
+      writeCart(cart);
+      updateHeaderCount();
+
+      // UI feedback
+      btn.classList.add('is-added');
+      setTimeout(() => btn.classList.remove('is-added'), 600);
+    } catch (err) {
+      console.error('[AddToCart] failed:', err);
+      alert('Could not add to cart. Check console for details.');
+    }
   });
-});
 
-// Footer year + initial count
-document.getElementById('year').textContent = new Date().getFullYear();
-updateHeaderCount();
+  // expose util (optional)
+  window.__ebela = { readCart, writeCart, updateHeaderCount, money };
+})();

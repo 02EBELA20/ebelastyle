@@ -1,90 +1,106 @@
-/* ========= EBELA STYLE — Cart Page ========= */
+/* ===== EBELA STYLE — Cart page (scoped) ===== */
+(function () {
+  const $ = (s, r=document)=>r.querySelector(s);
 
-const list = document.getElementById('cartList');
-const empty = document.getElementById('emptyCart');
-const wrap = document.getElementById('cartWrap');
-const subEl = document.getElementById('subTotal');
-const grandEl = document.getElementById('grandTotal');
-const checkoutBtn = document.getElementById('checkoutBtn');
+  function readCart(){ try { return JSON.parse(localStorage.getItem('cart')||'[]'); } catch { return []; } }
+  function writeCart(a){ localStorage.setItem('cart', JSON.stringify(a||[])); }
+  function money(n){ return `$${(Number(n)||0).toFixed(2)}`; }
 
-document.getElementById('year').textContent = new Date().getFullYear();
-
-function fmt(n){ return `$${n.toFixed(2)}`; }
-
-function render(){
-  const cart = getCart();
-  if (!cart.length){
-    empty.hidden = false; wrap.hidden = true; updateHeaderCount(); return;
+  function updateHeaderCount(){
+    const n = readCart().reduce((s,i)=> s+(Number(i.qty)||1), 0);
+    const el = document.getElementById('headerCartCount');
+    if (el) el.textContent = String(n);
   }
-  empty.hidden = true; wrap.hidden = false;
 
-  list.innerHTML = '';
-  let subtotal = 0;
+  function render(){
+    const items = readCart();
+    const empty = $('#emptyCart');
+    const wrap  = $('#cartWrap');
+    const list  = $('#cartList');
 
-  cart.forEach((it, idx) => {
-    const line = it.price * (it.qty || 1);
-    subtotal += line;
+    if (!empty || !wrap || !list) { console.warn('[Cart] markup IDs missing'); return; }
 
-    const li = document.createElement('li');
-    li.className = 'cart-item';
-    li.innerHTML = `
-      <img class="ci-img" src="${it.img}" alt="${it.name}">
-      <div class="ci-info">
-        <h3 class="ci-title">${it.name}</h3>
-        ${it.size || it.color ? `<p class="ci-meta">${it.size ? 'Size: '+it.size : ''} ${it.color ? 'Color: '+it.color : ''}</p>`: ''}
-        <p class="ci-price">${fmt(it.price)}</p>
-        <div class="ci-actions">
-          <div class="qty">
-            <button type="button" class="qty-btn" data-idx="${idx}" data-step="-1" aria-label="Decrease">−</button>
-            <input class="ci-qty" data-idx="${idx}" type="number" min="1" value="${it.qty || 1}">
-            <button type="button" class="qty-btn" data-idx="${idx}" data-step="1" aria-label="Increase">+</button>
+    if (!items.length){
+      empty.hidden = false;
+      wrap.hidden  = true;
+      $('#subTotal').textContent  = '$0.00';
+      $('#grandTotal').textContent = '$0.00';
+      updateHeaderCount();
+      return;
+    }
+
+    empty.hidden = true;
+    wrap.hidden  = false;
+    list.innerHTML = '';
+
+    items.forEach((it, idx)=>{
+      const li = document.createElement('li');
+      li.className = 'cart-item';
+      li.dataset.idx = String(idx);
+      li.innerHTML = `
+        <img class="ci-img" src="${it.img || ''}" alt="${it.name || 'Product'}">
+        <div class="ci-info">
+          <h3 class="ci-title">${it.name || 'Product'}</h3>
+          ${it.size || it.color ? `<p class="ci-meta">${it.size?`Size: ${it.size}`:''} ${it.color?`Color: ${it.color}`:''}</p>` : ''}
+          <div class="ci-actions">
+            <div class="qty">
+              <button class="qty-btn" data-dec>-</button>
+              <input class="qty-input" type="number" min="1" value="${it.qty||1}">
+              <button class="qty-btn" data-inc>+</button>
+            </div>
+            <button class="btn btn-sm" data-remove>Remove</button>
           </div>
-          <button type="button" class="btn btn-sm remove" data-idx="${idx}">Remove</button>
         </div>
-      </div>
-      <div class="ci-line">${fmt(line)}</div>
-    `;
-    list.appendChild(li);
+        <div class="ci-line">${money(it.price * (it.qty||1))}</div>
+      `;
+      list.appendChild(li);
+    });
+
+    totals();
+    updateHeaderCount();
+  }
+
+  function totals(){
+    const items = readCart();
+    const subtotal = items.reduce((s,i)=> s + (Number(i.price)*(Number(i.qty)||1)), 0);
+    $('#subTotal').textContent  = money(subtotal);
+    $('#grandTotal').textContent = money(subtotal);
+  }
+
+  // events
+  document.addEventListener('click', (e)=>{
+    const row = e.target.closest('.cart-item');
+    const items = readCart();
+
+    if (row && e.target.closest('[data-remove]')){
+      const idx = +row.dataset.idx;
+      items.splice(idx,1);
+      writeCart(items);
+      render();
+      return;
+    }
+
+    if (row && (e.target.closest('[data-dec]') || e.target.closest('[data-inc]'))){
+      const idx = +row.dataset.idx;
+      const it = items[idx]; if (!it) return;
+      if (e.target.closest('[data-dec]')) it.qty = Math.max(1, (Number(it.qty)||1) - 1);
+      if (e.target.closest('[data-inc]')) it.qty = (Number(it.qty)||1) + 1;
+      writeCart(items);
+      row.querySelector('.qty-input').value = it.qty;
+      row.querySelector('.ci-line').textContent = money(it.price * it.qty);
+      totals(); updateHeaderCount();
+    }
   });
 
-  subEl.textContent = fmt(subtotal);
-  grandEl.textContent = fmt(subtotal); // tax/shipping not included
-  updateHeaderCount();
-}
+  document.addEventListener('change', (e)=>{
+    const input = e.target.closest('.qty-input'); if (!input) return;
+    const row = e.target.closest('.cart-item'); const idx = +row.dataset.idx;
+    const items = readCart(); const it = items[idx]; if (!it) return;
+    it.qty = Math.max(1, parseInt(input.value || '1', 10));
+    writeCart(items);
+    row.querySelector('.ci-line').textContent = money(it.price * it.qty);
+    totals(); updateHeaderCount();
+  });
 
-list.addEventListener('click', (e) => {
-  const btn = e.target.closest('.qty-btn');
-  const rem = e.target.closest('.remove');
-  let cart = getCart();
-
-  if (btn){
-    const i = Number(btn.dataset.idx);
-    const step = Number(btn.dataset.step);
-    cart[i].qty = Math.max(1, (cart[i].qty || 1) + step);
-    setCart(cart); render(); return;
-  }
-  if (rem){
-    const i = Number(rem.dataset.idx);
-    cart.splice(i,1);
-    setCart(cart); render(); return;
-  }
-});
-
-list.addEventListener('change', (e) => {
-  const qtyInput = e.target.closest('.ci-qty');
-  if (!qtyInput) return;
-  let cart = getCart();
-  const i = Number(qtyInput.dataset.idx);
-  cart[i].qty = Math.max(1, Number(qtyInput.value || 1));
-  setCart(cart); render();
-});
-
-// Go to checkout
-checkoutBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  const cart = getCart();
-  if (!cart.length) return;
-  location.href = 'checkout.html';
-});
-
-render();
+  document.addEventListener('DOMContentLoaded', render);
+})();
